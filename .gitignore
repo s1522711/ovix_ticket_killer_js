@@ -1,3 +1,4 @@
 ﻿config.json
 node_modules/
 .env
+/lastState.json
