@@ -11,8 +11,9 @@
   },
   "keywords": [],
   "author": "Germani",
-  "license": "ISC",
+  "license": " GPL-3.0-only",
   "description": "rewrite of the ovix ticket killer bot in js",
+  "repository": "github:s1522711/ovix_ticket_killer_js",
   "dependencies": {
     "discord.js": "^14.16.3"
   },
