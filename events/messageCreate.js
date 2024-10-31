@@ -2,7 +2,7 @@
 const client = require('../index');
 const state = require('../state');
 // get the user ID from the config.json file imported in the index.js file
-const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime } = require('../config.json');
+const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId } = require('../config.json');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -29,7 +29,7 @@ module.exports = {
 
 async function handleAutoDelete(message) {
 	// if the message author is a staff member / trial staff member / a bot / admin
-	if (message.member.roles.cache.has(staffRoleId) || message.member.roles.cache.has(trialStaffRoleId) || message.member.permissions.has('0x0000000000000008')) {
+	if (message.member.roles.cache.has(staffRoleId) || message.member.roles.cache.has(trialStaffRoleId) || message.member.permissions.has('0x0000000000000008') && (!message.author.bot || message.author.id === clientId)) {
 		return;
 	}
 
