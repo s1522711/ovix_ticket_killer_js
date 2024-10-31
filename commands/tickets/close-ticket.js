@@ -14,10 +14,11 @@ module.exports = {
 		// send a normal message to the channel
 		const channel = interaction.channel;
 		channel.send('Hello! this ticket will be closed in 5 seconds');
+		await new Promise(resolve => setTimeout(resolve, 1000));
 		// display a 5-second countdown
 		for (let i = 5; i > 0; i--) {
-			await new Promise(resolve => setTimeout(resolve, 1000));
 			channel.send(`${i}`);
+			await new Promise(resolve => setTimeout(resolve, 1000));
 		}
 		await channel.send('0 - Goodbye!');
 

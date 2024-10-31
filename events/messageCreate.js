@@ -99,18 +99,18 @@ async function handleTicket(message) {
 		message.channel.send('Hello! these tickets are only for entering giveaways!');
 		await closeTicket(message, 'GIVEAWAY INVALID');
 	}
-	else if (message.content.toLowerCase().includes('//psrwd//') && state.unverifiedKill) {
+	else if (message.content.toLowerCase().includes('//pswrd//') && state.unverifiedKill) {
 		console.log('killable Unverified ticket killed');
 		message.channel.send(`Hello! the Unverified category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'UNVERIFIED DISABLED');
 	}
-	else if (message.content.toLowerCase().includes('//psrwd//') && !message.content.toLowerCase().includes('//ye')) {
+	else if (message.content.toLowerCase().includes('//pswrd//') && !message.content.toLowerCase().includes('//ye')) {
 		console.log('invalid Unverified ticket killed');
 		message.channel.send('Hello! these tickets are only for requesting a password reset for your account!');
 		await closeTicket(message, 'UNVERIFIED INVALID');
 	}
 	// if the message contains the correct content for stuff
-	else if (message.content.toLowerCase().includes('//psrwd//') && message.content.toLowerCase().includes('//ye')) {
+	else if (message.content.toLowerCase().includes('//pswrd//') && message.content.toLowerCase().includes('//ye')) {
 		console.log('valid Unverified ticket');
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
@@ -143,11 +143,12 @@ async function closeTicket(message, type) {
 	// send a normal message to the channel
 	const channel = message.channel;
 	channel.send('this ticket will be closed in 5 seconds');
+	await new Promise(resolve => setTimeout(resolve, 1000));
 	// display a 5-second countdown
 	for (let i = 5; i > 0; i--) {
+		channel.send(`${i}`);
 		// wait for 1 second
 		await new Promise(resolve => setTimeout(resolve, 1000));
-		channel.send(`${i}`);
 	}
 	await channel.send('0 - Goodbye!');
 
