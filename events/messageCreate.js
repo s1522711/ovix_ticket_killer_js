@@ -143,6 +143,7 @@ async function closeTicket(message, type) {
 	// send a normal message to the channel
 	const channel = message.channel;
 	channel.send('this ticket will be closed in 5 seconds');
+	// noinspection DuplicatedCode
 	await new Promise(resolve => setTimeout(resolve, 1000));
 	// display a 5-second countdown
 	for (let i = 5; i > 0; i--) {
