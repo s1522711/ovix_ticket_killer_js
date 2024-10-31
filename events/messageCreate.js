@@ -10,19 +10,19 @@ module.exports = {
 		if (message.author.id === tickettoolId) {
 			await handleTicket(message);
 		}
-		else if (message.author.bot) {
-			return;
-		}
-		else if (message.channel.type === 'DM') {
-			return;
-		}
-		// if the message mentions any user
-		else if (message.mentions.users.size > 0) {
-			handleMention(message);
-		}
 		// if the message is in one of the auto-delete channels
 		else if (autoDeleteChannelIds.includes(message.channel.id)) {
 			await handleAutoDelete(message);
+		}
+		else if (message.author.bot) {
+			console.log('Bot message');
+		}
+		else if (message.channel.type === 'DM') {
+			console.log('DM message');
+		}
+		// if the message mentions any user
+		else if (message.mentions.users.size > 0) {
+			await handleMention(message);
 		}
 	},
 };
@@ -113,7 +113,7 @@ async function handleTicket(message) {
 	else if (message.content.toLowerCase().includes('//psrwd//') && message.content.toLowerCase().includes('//ye')) {
 		console.log('valid Unverified ticket');
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
-		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}||`;
+		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Unverified, Reason: ${reason}`;
 		messageContent += '\nPlease do not ping staff we will get to you as soon as possible.';
 		message.channel.send(messageContent);
@@ -121,7 +121,7 @@ async function handleTicket(message) {
 	else if (message.content.toLowerCase().includes('//gvwy//') && message.content.toLowerCase().includes('//ye')) {
 		console.log('valid Giveaway ticket');
 		const understood = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
-		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}||`;
+		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Giveaway Claim, Understood: ${understood}`;
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
 		message.channel.send(messageContent);
@@ -132,7 +132,7 @@ async function handleTicket(message) {
 		const readStatus = message.embeds[1].description.split('\n')[7].replaceAll('`', '');
 		const game = message.content.split('//')[1];
 		console.log(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}`);
-		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}||`;
+		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nGame: ${game}, Reason: ${reason}, Read? ${readStatus}`;
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
 		message.channel.send(messageContent);
@@ -142,7 +142,7 @@ async function handleTicket(message) {
 async function closeTicket(message, type) {
 	// send a normal message to the channel
 	const channel = message.channel;
-	channel.send('Hello! this ticket will be closed in 5 seconds');
+	channel.send('this ticket will be closed in 5 seconds');
 	// display a 5-second countdown
 	for (let i = 5; i > 0; i--) {
 		// wait for 1 second

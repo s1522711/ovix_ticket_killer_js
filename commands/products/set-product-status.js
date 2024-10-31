@@ -52,8 +52,8 @@ module.exports = {
 			return interaction.reply({ content: 'Invalid product type.', ephemeral: true });
 		}
 
-		updateStatusMessage(interaction.client);
+		await updateStatusMessage(interaction.client);
 
-		interaction.reply(`Killing status of ${product} tickets set to ${status === 'up' ? 'Up' : status === 'donw' ? 0 : 2}.`);
+		interaction.reply(`Killing status of ${product} tickets set to ${status === 'up' ? 'Up' : status === 'down' ? 'Down' : 'Updating'}.`);
 	},
 };

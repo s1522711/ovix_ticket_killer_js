@@ -116,7 +116,6 @@ async function updateStatusMessage(client) {
 			.then(message => {
 				message.edit({ embeds: [embed1, embed2, embed3] });
 				updateLastState();
-				return;
 			})
 			.catch(error => {
 				console.log(`${error.message}`);

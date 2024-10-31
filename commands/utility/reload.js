@@ -42,7 +42,7 @@ module.exports = {
 
 		try {
 			const newCommand = require(commandPath);
-			interaction.client.commands.set(newCommand.data.name, newCommand);
+			await interaction.client.commands.set(newCommand.data.name, newCommand);
 			await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
 		}
 		catch (error) {
