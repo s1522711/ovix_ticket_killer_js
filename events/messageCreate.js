@@ -15,10 +15,10 @@ module.exports = {
 			await handleAutoDelete(message);
 		}
 		else if (message.author.bot) {
-			console.log('Bot message');
+			// pass
 		}
 		else if (message.channel.type === 'DM') {
-			console.log('DM message');
+			// pass
 		}
 		// if the message mentions any user
 		else if (message.mentions.users.size > 0) {
