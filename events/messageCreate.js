@@ -127,7 +127,7 @@ async function handleTicket(message) {
 		message.channel.send(messageContent);
 	}
 	// if the message contains the correct content for the rest of the tickets
-	else if (message.content.toLowerCase().includes('//gta') || message.content.toLowerCase().includes('//rdr') || message.content.toLowerCase().includes('//cs')) {
+	else if (message.content.toLowerCase().includes('//')) {
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		const readStatus = message.embeds[1].description.split('\n')[7].replaceAll('`', '');
 		const game = message.content.split('//')[1];
