@@ -31,12 +31,12 @@ module.exports = {
 		const validate = interaction.options.getString('validate');
 
 		if (validate !== code) {
-			return interaction.followUp({ content: 'The code and the validation code do not match.', ephemeral: true });
+			return interaction.editReply({ content: 'The code and the validation code do not match.', ephemeral: true });
 		}
 
 		state.ticketCode = code;
 		await updateStatusMessage(interaction.client);
 
-		interaction.followUp(`The code for the tickets has been set to \`${code}\`.`);
+		interaction.editReply(`The code for the tickets has been set to \`${code}\`.`);
 	},
 };
