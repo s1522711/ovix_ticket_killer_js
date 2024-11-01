@@ -13,5 +13,6 @@
   "autoDeleteTime": 5,
   "downEmoji": ":red_circle:",
   "upEmoji": ":green_circle:",
-  "updatingEmoji": ":yellow_circle:"
+  "updatingEmoji": ":yellow_circle:",
+  "pingTimeoutTime": 5
 }

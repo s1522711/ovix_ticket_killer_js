@@ -2,7 +2,7 @@
 // const client = require('../index');
 const state = require('../state');
 // get the user ID from the config.json file imported in the index.js file
-const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId } = require('../config.json');
+const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, pingTimeoutTime } = require('../config.json');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -68,6 +68,9 @@ async function handleMention(message) {
 
 			// send a message to the staff chat
 			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>`);
+
+			// timeout the user for a certain amount of time
+			message.member.timeout(pingTimeoutTime * 1000, 'bot auto-timeout for pinging staff');
 
 			for (let i = 0; i < 5; i++) {
 				message.channel.send(`Please dont ping staff! <@${message.author.id}>`);

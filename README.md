@@ -24,6 +24,7 @@ A discord.js rewrite of my small and shitty discord.py bot made for ovix to auto
   "autoDeleteTime": 5,
   "downEmoji": ":red_circle:",
   "upEmoji": ":green_circle:",
-  "updatingEmoji": ":yellow_circle:"
+  "updatingEmoji": ":yellow_circle:",
+  "pingTimeoutTime": 5
 }
 ```
