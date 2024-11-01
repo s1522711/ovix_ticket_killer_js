@@ -55,6 +55,11 @@ async function handleMention(message) {
 		return;
 	}
 
+	// if the message is a reply to a message, ignore it
+	if (message.reference) {
+		return;
+	}
+
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
