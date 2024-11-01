@@ -1,5 +1,5 @@
 ﻿const { Events } = require('discord.js');
-const client = require('../index');
+// const client = require('../index');
 const state = require('../state');
 // get the user ID from the config.json file imported in the index.js file
 const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId } = require('../config.json');
@@ -58,11 +58,11 @@ async function handleMention(message) {
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
-			console.log(`Mentioned user ${member[1].tag} has a staff role.`);
+			console.log(`Mentioned user ${member[1].user.tag} has a staff role.`);
 			console.log(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
 
 			// send a message to the staff chat
-			await client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>`);
+			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>`);
 
 			for (let i = 0; i < 5; i++) {
 				message.channel.send(`Please dont ping staff! <@${message.author.id}>`);

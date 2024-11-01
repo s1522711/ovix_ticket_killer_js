@@ -2,7 +2,6 @@
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-const state = require('./state');
 
 console.log('Starting bot...');
 
@@ -48,6 +47,7 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(token);
+// module.exports = client;
 
-module.exports = client;
+
+client.login(token);
