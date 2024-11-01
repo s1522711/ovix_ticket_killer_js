@@ -2,7 +2,7 @@
 const client = require('../index');
 const state = require('../state');
 // get the user ID from the config.json file imported in the index.js file
-const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, ticketCreationCode } = require('../config.json');
+const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId } = require('../config.json');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -127,7 +127,7 @@ async function handleTicket(message) {
 		message.channel.send(messageContent);
 	}
 	// if the message doesnt contain the correct code
-	else if (!message.content.toLowerCase().includes(ticketCreationCode) && message.content.toLowerCase().includes('//') && state.requireCode) {
+	else if (!message.content.toLowerCase().includes(state.ticketCode) && message.content.toLowerCase().includes('//') && state.requireCode) {
 		console.log('invalid ticket killed');
 		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
 		await closeTicket(message, 'INVALID CODE');

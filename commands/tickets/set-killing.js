@@ -1,5 +1,5 @@
 ﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
-const { modRoleId, ticketCreationCode } = require('../../config.json');
+const { modRoleId } = require('../../config.json');
 const state = require('../../state');
 const { updateStatusMessage } = require('../../statusAndLastState');
 
@@ -65,7 +65,7 @@ module.exports = {
 			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
 		}
 		else if (ticket === 'requireCode') {
-			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${ticketCreationCode}`);
+			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${state.ticketCode}.`);
 		}
 	},
 };

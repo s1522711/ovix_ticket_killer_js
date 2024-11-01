@@ -1,7 +1,7 @@
 ﻿const fs = require('fs');
 const state = require('./state');
 const { EmbedBuilder } = require('discord.js');
-const { statusChannelId, upEmoji, downEmoji, updatingEmoji } = require('./config.json');
+const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode } = require('./config.json');
 
 function doLastState() {
 	// check if lastState.json exists
@@ -19,6 +19,7 @@ function doLastState() {
 			state.unverifiedKill = lastState.killing.unverified;
 			state.giveawayKill = lastState.killing.giveaway;
 			state.requireCode = lastState.killing.requireCode;
+			state.ticketCode = lastState.killing.ticketCode;
 			// status
 			state.apiStatus = lastState.status.api;
 			state.gtaStatus = lastState.status.gta;
@@ -28,7 +29,7 @@ function doLastState() {
 			state.statusMessageId = lastState.statusMessageId;
 
 			// if any of the values are undefined, rebuild the file
-			if (state.gtaKill === undefined || state.rdr2Kill === undefined || state.cs2Kill === undefined || state.unverifiedKill === undefined || state.giveawayKill === undefined || state.apiStatus === undefined || state.gtaStatus === undefined || state.rdr2Status === undefined || state.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '') {
+			if (state.gtaKill === undefined || state.rdr2Kill === undefined || state.cs2Kill === undefined || state.unverifiedKill === undefined || state.giveawayKill === undefined || state.apiStatus === undefined || state.gtaStatus === undefined || state.rdr2Status === undefined || state.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.ticketCode === undefined || state.ticketCode === '' || state.requireCode === undefined) {
 				console.log('One or more values in lastState.json are undefined, rebuilding last state...');
 				rebuildLastState();
 			}
@@ -54,6 +55,7 @@ function rebuildLastState() {
 			unverified: false,
 			giveaway: false,
 			requireCode: true,
+			ticketCode: defaultTicketCreationCode,
 		},
 		status: {
 			api: 1,
@@ -77,6 +79,7 @@ function updateLastState() {
 			unverified: state.unverifiedKill,
 			giveaway: state.giveawayKill,
 			requireCode: state.requireCode,
+			ticketCode: state.ticketCode,
 		},
 		status: {
 			api: state.apiStatus,

@@ -5,6 +5,7 @@
 	unverifiedKill: false,
 	giveawayKill: false,
 	requireCode: false,
+	ticketCode: 'none',
 	apiStatus: 1,
 	gtaStatus: 1,
 	rdr2Status: 1,
