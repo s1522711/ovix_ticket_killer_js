@@ -25,7 +25,7 @@ module.exports = {
 			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
 		}
 
-		interaction.deferReply();
+		await interaction.deferReply();
 
 		const code = interaction.options.getString('code');
 		const validate = interaction.options.getString('validate');
