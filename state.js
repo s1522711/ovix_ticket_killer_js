@@ -4,6 +4,7 @@
 	cs2Kill: false,
 	unverifiedKill: false,
 	giveawayKill: false,
+	requireCode: false,
 	apiStatus: 1,
 	gtaStatus: 1,
 	rdr2Status: 1,

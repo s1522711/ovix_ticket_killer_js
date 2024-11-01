@@ -18,6 +18,7 @@ function doLastState() {
 			state.cs2Kill = lastState.killing.cs2;
 			state.unverifiedKill = lastState.killing.unverified;
 			state.giveawayKill = lastState.killing.giveaway;
+			state.requireCode = lastState.killing.requireCode;
 			// status
 			state.apiStatus = lastState.status.api;
 			state.gtaStatus = lastState.status.gta;
@@ -52,6 +53,7 @@ function rebuildLastState() {
 			cs2: false,
 			unverified: false,
 			giveaway: false,
+			requireCode: true,
 		},
 		status: {
 			api: 1,
@@ -74,6 +76,7 @@ function updateLastState() {
 			cs2: state.cs2Kill,
 			unverified: state.unverifiedKill,
 			giveaway: state.giveawayKill,
+			requireCode: state.requireCode,
 		},
 		status: {
 			api: state.apiStatus,

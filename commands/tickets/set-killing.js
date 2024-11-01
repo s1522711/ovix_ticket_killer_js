@@ -1,5 +1,5 @@
 ﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
-const { modRoleId } = require('../../config.json');
+const { modRoleId, ticketCreationCode } = require('../../config.json');
 const state = require('../../state');
 const { updateStatusMessage } = require('../../statusAndLastState');
 
@@ -26,6 +26,7 @@ module.exports = {
 					{ name: 'CS2', value: 'cs2' },
 					{ name: 'Unverified', value: 'unverified' },
 					{ name: 'Giveaway', value: 'giveaway' },
+					{ name: 'Require Code', value: 'requireCode' },
 				)),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(modRoleId) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -51,12 +52,20 @@ module.exports = {
 		case 'giveaway':
 			state.giveawayKill = killing;
 			break;
+		case 'requireCode':
+			state.requireCode = killing;
+			break;
 		default:
 			return interaction.reply({ content: 'Invalid ticket type.', ephemeral: true });
 		}
 
 		updateStatusMessage(interaction.client);
 
-		interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
+		if (ticket !== 'requireCode') {
+			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
+		}
+		else if (ticket === 'requireCode') {
+			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${ticketCreationCode}`);
+		}
 	},
 };

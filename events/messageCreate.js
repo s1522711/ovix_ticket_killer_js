@@ -2,7 +2,7 @@
 const client = require('../index');
 const state = require('../state');
 // get the user ID from the config.json file imported in the index.js file
-const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId } = require('../config.json');
+const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, ticketCreationCode } = require('../config.json');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -126,6 +126,12 @@ async function handleTicket(message) {
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
 		message.channel.send(messageContent);
 	}
+	// if the message doesnt contain the correct code
+	else if (!message.content.toLowerCase().includes(ticketCreationCode) && message.content.toLowerCase().includes('//') && state.requireCode) {
+		console.log('invalid ticket killed');
+		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
+		await closeTicket(message, 'INVALID CODE');
+	}
 	// if the message contains the correct content for the rest of the tickets
 	else if (message.content.toLowerCase().includes('//')) {
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
@@ -146,12 +152,14 @@ async function closeTicket(message, type) {
 	// noinspection DuplicatedCode
 	await new Promise(resolve => setTimeout(resolve, 1000));
 	// display a 5-second countdown
-	for (let i = 5; i > 0; i--) {
-		channel.send(`${i}`);
-		// wait for 1 second
+	let lastMst = await channel.send('5');
+	for (let i = 4; i > 0; i--) {
+		// edit the last message
 		await new Promise(resolve => setTimeout(resolve, 1000));
+		lastMst = await lastMst.edit(i.toString());
 	}
-	await channel.send('0 - Goodbye!');
+	await new Promise(resolve => setTimeout(resolve, 1000));
+	await lastMst.edit('0 - Goodbye!');
 
 	// Close the channel
 	await new Promise(resolve => setTimeout(resolve, 500));
