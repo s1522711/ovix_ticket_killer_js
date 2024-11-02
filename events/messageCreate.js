@@ -1,6 +1,7 @@
 ﻿const { Events } = require('discord.js');
 // const client = require('../index');
 const state = require('../state');
+const { randomizeCode } = require('../statusAndLastState');
 // get the user ID from the config.json file imported in the index.js file
 const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, pingTimeoutTime } = require('../config.json');
 
@@ -142,6 +143,8 @@ async function handleTicket(message) {
 	}
 	// if the message contains the correct content for the rest of the tickets
 	else if (message.content.toLowerCase().includes('//')) {
+		// randomize the code after a good ticket is opened
+		await randomizeCode(message.client);
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		const readStatus = message.embeds[1].description.split('\n')[7].replaceAll('`', '');
 		const game = message.content.split('//')[1];
