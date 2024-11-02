@@ -16,7 +16,7 @@ module.exports = {
 		}, ticketCodeRandomSchedule * 1000 * 60);
 		await randomizeCode(client);
 		// print the global variables
-		console.log('--------------------------------------------');
+		// console.log('--------------------------------------------');
 		console.log(`gtaKill: ${state.killing.gtaKill}`);
 		console.log(`rdr2Kill: ${state.killing.rdr2Kill}`);
 		console.log(`cs2Kill: ${state.killing.cs2Kill}`);
