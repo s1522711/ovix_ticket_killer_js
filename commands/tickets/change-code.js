@@ -13,13 +13,13 @@ module.exports = {
 				.setDescription('Set what killing status to change to')
 				.setRequired(true)
 				.setMinLength(4)
-				.setMaxLength(10))
+				.setMaxLength(4))
 		.addStringOption(option =>
 			option.setName('validate')
 				.setDescription('Set the ticket type to change')
 				.setRequired(true)
 				.setMinLength(4)
-				.setMaxLength(10)),
+				.setMaxLength(4)),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
@@ -32,6 +32,13 @@ module.exports = {
 
 		if (validate !== code) {
 			return interaction.editReply({ content: 'The code and the validation code do not match.', ephemeral: true });
+		}
+		else if (code === state.killing.ticketCode) {
+			return interaction.editReply({ content: 'The code is already set to that.', ephemeral: true });
+		}
+		// if the code is not numeric
+		else if (isNaN(code)) {
+			return interaction.editReply({ content: 'The code must be a 4 digit number.', ephemeral: true });
 		}
 
 		state.killing.ticketCode = code;
