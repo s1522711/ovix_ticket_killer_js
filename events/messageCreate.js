@@ -82,22 +82,22 @@ async function handleMention(message) {
 }
 
 async function handleTicket(message) {
-	if (message.content.toLowerCase().includes('//gta') && state.gtaKill) {
+	if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
 		console.log('GTA ticket killed');
 		message.channel.send(`Hello! the Gta category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'GTA DISABLED');
 	}
-	else if (message.content.toLowerCase().includes('//rdr') && state.rdr2Kill) {
+	else if (message.content.toLowerCase().includes('//rdr') && state.killing.rdr2Kill) {
 		console.log('RDR2 ticket killed');
 		message.channel.send(`Hello! the Rdr2 category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'RDR2 DISABLED');
 	}
-	else if (message.content.toLowerCase().includes('//cs') && state.cs2Kill) {
+	else if (message.content.toLowerCase().includes('//cs') && state.killing.cs2Kill) {
 		console.log('CS2 ticket killed');
 		message.channel.send(`Hello! the Cs2 category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'CS2 DISABLED');
 	}
-	else if (message.content.toLowerCase().includes('//gvwy//') && state.giveawayKill) {
+	else if (message.content.toLowerCase().includes('//gvwy//') && state.killing.giveawayKill) {
 		console.log('Giveaway ticket killed');
 		message.channel.send(`Hello! the Giveaway category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'GIVEAWAY DISABLED');
@@ -107,7 +107,7 @@ async function handleTicket(message) {
 		message.channel.send('Hello! these tickets are only for entering giveaways!');
 		await closeTicket(message, 'GIVEAWAY INVALID');
 	}
-	else if (message.content.toLowerCase().includes('//pswrd//') && state.unverifiedKill) {
+	else if (message.content.toLowerCase().includes('//pswrd//') && state.killing.unverifiedKill) {
 		console.log('killable Unverified ticket killed');
 		message.channel.send(`Hello! the Unverified category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'UNVERIFIED DISABLED');
@@ -135,7 +135,7 @@ async function handleTicket(message) {
 		message.channel.send(messageContent);
 	}
 	// if the message doesnt contain the correct code
-	else if (!message.content.toLowerCase().includes(state.ticketCode) && message.content.toLowerCase().includes('//') && state.requireCode) {
+	else if (!message.content.toLowerCase().includes(state.killing.ticketCode) && message.content.toLowerCase().includes('//') && state.killing.requireCode) {
 		console.log('invalid ticket killed');
 		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
 		await closeTicket(message, 'INVALID CODE');

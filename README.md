@@ -15,6 +15,8 @@ A discord.js rewrite of my small and shitty discord.py bot made for ovix to auto
   "guildId": "GUILD_ID_HERE",
   "tickettoolId": "TICKETTOOL_ID_HERE",
   "defaultTicketCreationCode": "DEFAULT_TICKET_CREATION_CODE_HERE",
+  "ticketCodeMessageChannelId": "TICKET_CODE_MESSAGE_CHANNEL_ID_HERE",
+  "ticketCodeRandomSchedule": "INTERVAL_IN_HOURS_HERE",
   "statusChannelId": "STATUS_CHANNEL_ID_HERE",
   "staffRoleId": "STAFF_ROLE_ID_HERE",
   "modRoleId": "MOD_ROLE_ID_HERE",

@@ -1,7 +1,7 @@
 ﻿const fs = require('fs');
 const state = require('./state');
 const { EmbedBuilder } = require('discord.js');
-const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode } = require('./config.json');
+const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode, ticketCodeMessageChannelId } = require('./config.json');
 
 function doLastState() {
 	// check if lastState.json exists
@@ -13,23 +13,26 @@ function doLastState() {
 			const lastState = JSON.parse(data);
 			// set the global variables to the values in the file
 			// killing
-			state.gtaKill = lastState.killing.gta;
-			state.rdr2Kill = lastState.killing.rdr2;
-			state.cs2Kill = lastState.killing.cs2;
-			state.unverifiedKill = lastState.killing.unverified;
-			state.giveawayKill = lastState.killing.giveaway;
-			state.requireCode = lastState.killing.requireCode;
-			state.ticketCode = lastState.killing.ticketCode;
+			state.killing.gtaKill = lastState.killing.gtaKill;
+			state.killing.rdr2Kill = lastState.killing.rdr2Kill;
+			state.killing.cs2Kill = lastState.killing.cs2Kill;
+			state.killing.unverifiedKill = lastState.killing.unverifiedKill;
+			state.killing.giveawayKill = lastState.killing.giveawayKill;
+			state.killing.requireCode = lastState.killing.requireCode;
+			state.killing.ticketCode = lastState.killing.ticketCode;
+			state.killing.randomizeCode = lastState.killing.randomizeCode;
 			// status
-			state.apiStatus = lastState.status.api;
-			state.gtaStatus = lastState.status.gta;
-			state.rdr2Status = lastState.status.rdr2;
-			state.cs2Status = lastState.status.cs2;
+			state.status.apiStatus = lastState.status.apiStatus;
+			state.status.gtaStatus = lastState.status.gtaStatus;
+			state.status.rdr2Status = lastState.status.rdr2Status;
+			state.status.cs2Status = lastState.status.cs2Status;
 			// statusMessageId
 			state.statusMessageId = lastState.statusMessageId;
+			// ticketCodeMessageId
+			state.ticketCodeMessageId = lastState.ticketCodeMessageId;
 
 			// if any of the values are undefined, rebuild the file
-			if (state.gtaKill === undefined || state.rdr2Kill === undefined || state.cs2Kill === undefined || state.unverifiedKill === undefined || state.giveawayKill === undefined || state.apiStatus === undefined || state.gtaStatus === undefined || state.rdr2Status === undefined || state.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.ticketCode === undefined || state.ticketCode === '' || state.requireCode === undefined) {
+			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined) {
 				console.log('One or more values in lastState.json are undefined, rebuilding last state...');
 				rebuildLastState();
 			}
@@ -49,21 +52,23 @@ function doLastState() {
 function rebuildLastState() {
 	const lastState = {
 		killing: {
-			gta: false,
-			rdr2: false,
-			cs2: false,
-			unverified: false,
-			giveaway: false,
+			gtaKill: false,
+			rdr2Kill: false,
+			cs2Kill: false,
+			unverifiedKill: false,
+			giveawayKill: false,
 			requireCode: true,
 			ticketCode: defaultTicketCreationCode,
+			randomizeCode: true,
 		},
 		status: {
-			api: 1,
-			gta: 1,
-			rdr2: 1,
-			cs2: 1,
+			apiStatus: 1,
+			gtaStatus: 1,
+			rdr2Status: 1,
+			cs2Status: 1,
 		},
 		statusMessageId: 'none',
+		ticketCodeMessageId: 'none',
 	};
 	fs.writeFileSync('./lastState.json', JSON.stringify(lastState, null, 2));
 	console.log('Rebuilt last state.');
@@ -71,6 +76,7 @@ function rebuildLastState() {
 }
 
 function updateLastState() {
+	/*
 	const lastState = {
 		killing: {
 			gta: state.gtaKill,
@@ -89,7 +95,8 @@ function updateLastState() {
 		},
 		statusMessageId: state.statusMessageId,
 	};
-	fs.writeFileSync('./lastState.json', JSON.stringify(lastState, null, 2));
+	*/
+	fs.writeFileSync('./lastState.json', JSON.stringify(state, null, 2));
 }
 
 async function updateStatusMessage(client) {
@@ -98,19 +105,19 @@ async function updateStatusMessage(client) {
 		.setTitle('Status Guide')
 		.setDescription(`**${upEmoji} | Online**\n**${downEmoji} | Offline**\n**${updatingEmoji} | Updating**`)
 		.setColor('DarkGrey');
-	const embed2GtaLine = `Grand Theft Auto 5: ${state.gtaStatus === 1 ? upEmoji : state.gtaStatus === 0 ? downEmoji : updatingEmoji}`;
-	const embed2Rdr2Line = `Red Dead Redemption 2: ${state.rdr2Status === 1 ? upEmoji : state.rdr2Status === 0 ? downEmoji : updatingEmoji}`;
-	const embed2Cs2Line = `Counter-Strike 2: ${state.cs2Status === 1 ? upEmoji : state.cs2Status === 0 ? downEmoji : updatingEmoji}`;
-	const embed2ApiLine = `API: ${state.apiStatus === 1 ? upEmoji : state.apiStatus === 0 ? downEmoji : updatingEmoji}`;
+	const embed2GtaLine = `Grand Theft Auto 5: ${state.status.gtaStatus === 1 ? upEmoji : state.status.gtaStatus === 0 ? downEmoji : updatingEmoji}`;
+	const embed2Rdr2Line = `Red Dead Redemption 2: ${state.status.rdr2Status === 1 ? upEmoji : state.status.rdr2Status === 0 ? downEmoji : updatingEmoji}`;
+	const embed2Cs2Line = `Counter-Strike 2: ${state.status.cs2Status === 1 ? upEmoji : state.status.cs2Status === 0 ? downEmoji : updatingEmoji}`;
+	const embed2ApiLine = `API: ${state.status.apiStatus === 1 ? upEmoji : state.status.apiStatus === 0 ? downEmoji : updatingEmoji}`;
 	const embed2 = new EmbedBuilder()
 		.setTitle('Product Status')
 		.setDescription(`${embed2GtaLine}\n${embed2Rdr2Line}\n${embed2Cs2Line}\n${embed2ApiLine}`)
 		.setColor('DarkGrey');
-	const embed3GtaLine = `Grand Theft Auto 5: ${state.gtaKill ? downEmoji : upEmoji}`;
-	const embed3Rdr2Line = `Red Dead Redemption 2: ${state.rdr2Kill ? downEmoji : upEmoji}`;
-	const embed3Cs2Line = `Counter-Strike 2: ${state.cs2Kill ? downEmoji : upEmoji}`;
-	const embed3UnverifiedLine = `Unverified: ${state.unverifiedKill ? downEmoji : upEmoji}`;
-	const embed3GiveawayLine = `Giveaway: ${state.giveawayKill ? downEmoji : upEmoji}`;
+	const embed3GtaLine = `Grand Theft Auto 5: ${state.killing.gtaKill ? downEmoji : upEmoji}`;
+	const embed3Rdr2Line = `Red Dead Redemption 2: ${state.killing.rdr2Kill ? downEmoji : upEmoji}`;
+	const embed3Cs2Line = `Counter-Strike 2: ${state.killing.cs2Kill ? downEmoji : upEmoji}`;
+	const embed3UnverifiedLine = `Unverified: ${state.killing.unverifiedKill ? downEmoji : upEmoji}`;
+	const embed3GiveawayLine = `Giveaway: ${state.killing.giveawayKill ? downEmoji : upEmoji}`;
 	const embed3 = new EmbedBuilder()
 		.setTitle('Ticket Status')
 		.setDescription(`${embed3GtaLine}\n${embed3Rdr2Line}\n${embed3Cs2Line}\n${embed3UnverifiedLine}\n${embed3GiveawayLine}`)
@@ -136,4 +143,45 @@ async function updateStatusMessage(client) {
 	}
 }
 
-module.exports = { updateStatusMessage, doLastState };
+async function randomizeCode(client) {
+	let code = '';
+	if (state.killing.randomizeCode) {
+		const characters = '0123456789';
+		for (let i = 0; i < 4; i++) {
+			code += characters.charAt(Math.floor(Math.random() * characters.length));
+		}
+	}
+	else {
+		code = state.killing.ticketCode;
+	}
+
+	state.killing.ticketCode = code;
+	console.log(`New ticket code: ${code}`);
+	updateLastState();
+
+	await updateCodeMessage(client);
+}
+
+async function updateCodeMessage(client) {
+	const text = `TICKET CODE: ${state.killing.ticketCode}`;
+	if (state.ticketCodeMessageId !== '' && state.ticketCodeMessageId !== 'none' && state.ticketCodeMessageId !== undefined && state.ticketCodeMessageId !== null) {
+		client.channels.cache.get(ticketCodeMessageChannelId).messages.fetch(state.ticketCodeMessageId)
+			.then(message => {
+				message.edit(text);
+				updateLastState();
+			})
+			.catch(error => {
+				console.log(`${error.message}`);
+				console.log('Error fetching code message, rebuilding last state...');
+				rebuildLastState();
+			});
+	}
+	if ((state.ticketCodeMessageId === 'none' && state.ticketCodeMessageId !== '') && state.ticketCodeMessageId !== undefined && state.ticketCodeMessageId !== null) {
+		const sent = await client.channels.cache.get(ticketCodeMessageChannelId).send(text);
+		state.ticketCodeMessageId = sent.id;
+		updateLastState();
+	}
+}
+
+
+module.exports = { updateStatusMessage, doLastState, randomizeCode, updateCodeMessage };

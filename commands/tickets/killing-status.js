@@ -12,11 +12,13 @@ module.exports = {
 			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
 		}
 
-		const gtaEmoji = state.gtaKill ? downEmoji : upEmoji;
-		const rdr2Emoji = state.rdr2Kill ? downEmoji : upEmoji;
-		const cs2Emoji = state.cs2Kill ? downEmoji : upEmoji;
-		const unverifiedEmoji = state.unverifiedKill ? downEmoji : upEmoji;
-		const giveawayEmoji = state.giveawayKill ? downEmoji : upEmoji;
-		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${state.requireCode ? 'Yes' : 'No'}, code: ${state.ticketCode}`);
+		const gtaEmoji = state.killing.gtaKill ? downEmoji : upEmoji;
+		const rdr2Emoji = state.killing.rdr2Kill ? downEmoji : upEmoji;
+		const cs2Emoji = state.killing.cs2Kill ? downEmoji : upEmoji;
+		const unverifiedEmoji = state.killing.unverifiedKill ? downEmoji : upEmoji;
+		const giveawayEmoji = state.killing.giveawayKill ? downEmoji : upEmoji;
+		const requireCode = state.killing.requireCode ? 'yes' : 'no';
+		const randomizeCode = state.killing.randomizeCode ? 'yes' : 'no';
+		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${requireCode}\nRandomize code: ${randomizeCode}, code: ${state.killing.ticketCode}`);
 	},
 };

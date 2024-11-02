@@ -37,16 +37,16 @@ module.exports = {
 
 		switch (product) {
 		case 'gta':
-			state.gtaStatus = status === 'up' ? 1 : status === 'down' ? 0 : 2;
+			state.status.gtaStatus = status === 'up' ? 1 : status === 'down' ? 0 : 2;
 			break;
 		case 'rdr2':
-			state.rdr2Status = status === 'up' ? 1 : status === 'down' ? 0 : 2;
+			state.status.rdr2Status = status === 'up' ? 1 : status === 'down' ? 0 : 2;
 			break;
 		case 'cs2':
-			state.cs2Status = status === 'up' ? 1 : status === 'down' ? 0 : 2;
+			state.status.cs2Status = status === 'up' ? 1 : status === 'down' ? 0 : 2;
 			break;
 		case 'api':
-			state.apiStatus = status === 'up' ? 1 : status === 'down' ? 0 : 2;
+			state.status.apiStatus = status === 'up' ? 1 : status === 'down' ? 0 : 2;
 			break;
 		default:
 			return interaction.reply({ content: 'Invalid product type.', ephemeral: true });

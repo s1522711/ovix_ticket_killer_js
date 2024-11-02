@@ -27,6 +27,7 @@ module.exports = {
 					{ name: 'Unverified', value: 'unverified' },
 					{ name: 'Giveaway', value: 'giveaway' },
 					{ name: 'Require Code', value: 'requireCode' },
+					{ name: 'Randomize Code', value: 'randomizeCode' },
 				)),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(modRoleId) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -38,22 +39,25 @@ module.exports = {
 
 		switch (ticket) {
 		case 'gta':
-			state.gtaKill = killing;
+			state.killing.gtaKill = killing;
 			break;
 		case 'rdr2':
-			state.rdr2Kill = killing;
+			state.killing.rdr2Kill = killing;
 			break;
 		case 'cs2':
-			state.cs2Kill = killing;
+			state.killing.cs2Kill = killing;
 			break;
 		case 'unverified':
-			state.unverifiedKill = killing;
+			state.killing.unverifiedKill = killing;
 			break;
 		case 'giveaway':
-			state.giveawayKill = killing;
+			state.killing.giveawayKill = killing;
 			break;
 		case 'requireCode':
-			state.requireCode = killing;
+			state.killing.requireCode = killing;
+			break;
+		case 'randomizeCode':
+			state.killing.randomizeCode = killing;
 			break;
 		default:
 			return interaction.reply({ content: 'Invalid ticket type.', ephemeral: true });
@@ -61,11 +65,14 @@ module.exports = {
 
 		updateStatusMessage(interaction.client);
 
-		if (ticket !== 'requireCode') {
-			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
+		if (ticket === 'requireCode') {
+			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${state.killing.ticketCode}.`);
 		}
-		else if (ticket === 'requireCode') {
-			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${state.ticketCode}.`);
+		else if (ticket === 'randomizeCode') {
+			interaction.reply(`Randomize code set to ${killing ? 'Yes' : 'No'}.`);
+		}
+		else {
+			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
 		}
 	},
 };

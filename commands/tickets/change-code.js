@@ -1,6 +1,6 @@
 ﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 const state = require('../../state');
-const { updateStatusMessage } = require('../../statusAndLastState');
+const { updateStatusMessage, updateCodeMessage } = require('../../statusAndLastState');
 
 module.exports = {
 	cooldown: 1,
@@ -34,8 +34,9 @@ module.exports = {
 			return interaction.editReply({ content: 'The code and the validation code do not match.', ephemeral: true });
 		}
 
-		state.ticketCode = code;
+		state.killing.ticketCode = code;
 		await updateStatusMessage(interaction.client);
+		await updateCodeMessage(interaction.client);
 
 		interaction.editReply(`The code for the tickets has been set to \`${code}\`.`);
 	},
