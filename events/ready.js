@@ -11,7 +11,7 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		doLastState();
 		console.log(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);
-		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).minute();
+		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).second();
 		later.setInterval(() => {
 			randomizeCode(client);
 		}, schedule);
