@@ -156,7 +156,7 @@ async function randomizeCode(client) {
 	}
 
 	state.killing.ticketCode = code;
-	console.log(`New ticket code: ${code}`);
+	console.log(`New ticket code: ${code}, timestamp ${new Date().toISOString()}`);
 	updateLastState();
 
 	await updateCodeMessage(client);
