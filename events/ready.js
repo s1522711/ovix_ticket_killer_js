@@ -1,6 +1,6 @@
 ﻿const { Events } = require('discord.js');
 const state = require('../state');
-const later = require('@breejs/later');
+// const later = require('@breejs/later');
 const { updateStatusMessage, doLastState, randomizeCode } = require('../statusAndLastState');
 const { ticketCodeRandomSchedule } = require('../config.json');
 
@@ -11,10 +11,10 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		doLastState();
 		console.log(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);
-		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).second();
-		later.setInterval(() => {
+		// Schedule the randomizeCode function to run every ticketCodeRandomSchedule seconds
+		setInterval(() => {
 			randomizeCode(client);
-		}, schedule);
+		}, ticketCodeRandomSchedule * 1000);
 		await randomizeCode(client);
 		// print the global variables
 		console.log('--------------------------------------------');
