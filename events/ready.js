@@ -31,7 +31,7 @@ module.exports = {
 		console.log(`statusMessageId: ${state.statusMessageId}`);
 		console.log(`ticketCodeMessageId: ${state.ticketCodeMessageId}`);
 		updateStatusMessage(client);
-		console.log('--------------------------------------------');
+		console.log('-----------------------------------------------------');
 	},
 };
 
