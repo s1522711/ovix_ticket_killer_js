@@ -1,5 +1,5 @@
 ﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
-const { modRoleId } = require('../../config.json');
+const { modRoleId, ticketCodeRandomSchedule } = require('../../config.json');
 const state = require('../../state');
 const { updateStatusMessage } = require('../../statusAndLastState');
 
@@ -66,10 +66,10 @@ module.exports = {
 		updateStatusMessage(interaction.client);
 
 		if (ticket === 'requireCode') {
-			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, code is ${state.killing.ticketCode}.`);
+			interaction.reply(`Require code set to ${killing ? 'Yes' : 'No'}, Code: \`${state.killing.ticketCode}\`.`);
 		}
 		else if (ticket === 'randomizeCode') {
-			interaction.reply(`Randomize code set to ${killing ? 'Yes' : 'No'}.`);
+			interaction.reply(`Randomize code set to ${killing ? 'Yes' : 'No'}, interval: \`${ticketCodeRandomSchedule} minutes\`.`);
 		}
 		else {
 			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);

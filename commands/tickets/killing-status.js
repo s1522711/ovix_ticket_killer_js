@@ -1,6 +1,6 @@
 ﻿const { SlashCommandBuilder } = require('discord.js');
 const state = require('../../state');
-const { staffRoleId, trialStaffRoleId, upEmoji, downEmoji } = require('../../config.json');
+const { staffRoleId, trialStaffRoleId, upEmoji, downEmoji, ticketCodeRandomSchedule } = require('../../config.json');
 
 module.exports = {
 	cooldown: 1,
@@ -19,6 +19,6 @@ module.exports = {
 		const giveawayEmoji = state.killing.giveawayKill ? downEmoji : upEmoji;
 		const requireCode = state.killing.requireCode ? 'yes' : 'no';
 		const randomizeCode = state.killing.randomizeCode ? 'yes' : 'no';
-		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${requireCode}\nRandomize code: ${randomizeCode}, code: ${state.killing.ticketCode}`);
+		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${requireCode}, code: \`${state.killing.ticketCode}\`\nRandomize code: ${randomizeCode}, interval: \`${ticketCodeRandomSchedule} minutes\``);
 	},
 };
