@@ -23,6 +23,7 @@ module.exports = {
 		console.log(`giveawayKill: ${state.killing.giveawayKill}`);
 		console.log(`requireCode: ${state.killing.requireCode}`);
 		console.log(`ticketCreationCode: ${state.killing.ticketCode}`);
+		console.log(`randomizeCode: ${state.killing.randomizeCode}`);
 		console.log(`apiStatus: ${state.status.apiStatus}`);
 		console.log(`gtaStatus: ${state.status.gtaStatus}`);
 		console.log(`rdr2Status: ${state.status.rdr2Status}`);
