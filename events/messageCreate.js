@@ -4,6 +4,7 @@ const state = require('../state');
 const { randomizeCode } = require('../statusAndLastState');
 // get the user ID from the config.json file imported in the index.js file
 const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, pingTimeoutTime } = require('../config.json');
+const { logToConsole } = require('../logger');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -34,7 +35,7 @@ async function handleAutoDelete(message) {
 		return;
 	}
 
-	console.log(`Auto-deleting message from ${message.author.tag} in ${message.channel.name}, content: ${message.content}`);
+	logToConsole(`Auto-deleting message from ${message.author.tag} in ${message.channel.name}, content: ${message.content}`);
 
 	// delete the message after a certain amount of time
 	try {
@@ -43,7 +44,7 @@ async function handleAutoDelete(message) {
 	}
 	catch (error) {
 		if (error.code === 10008) {
-			console.log('Message already deleted');
+			logToConsole('Message already deleted');
 		}
 	}
 
@@ -64,8 +65,8 @@ async function handleMention(message) {
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
-			console.log(`Mentioned user ${member[1].user.tag} has a staff role.`);
-			console.log(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
+			logToConsole(`Mentioned user ${member[1].user.tag} has a staff role.`);
+			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
 
 			// send a message to the staff chat
 			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>`);
@@ -84,43 +85,43 @@ async function handleMention(message) {
 
 async function handleTicket(message) {
 	if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
-		console.log('GTA ticket killed');
+		logToConsole('GTA ticket killed');
 		message.channel.send(`Hello! the Gta category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'GTA DISABLED');
 	}
 	else if (message.content.toLowerCase().includes('//rdr') && state.killing.rdr2Kill) {
-		console.log('RDR2 ticket killed');
+		logToConsole('RDR2 ticket killed');
 		message.channel.send(`Hello! the Rdr2 category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'RDR2 DISABLED');
 	}
 	else if (message.content.toLowerCase().includes('//cs') && state.killing.cs2Kill) {
-		console.log('CS2 ticket killed');
+		logToConsole('CS2 ticket killed');
 		message.channel.send(`Hello! the Cs2 category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'CS2 DISABLED');
 	}
 	else if (message.content.toLowerCase().includes('//gvwy//') && state.killing.giveawayKill) {
-		console.log('Giveaway ticket killed');
+		logToConsole('Giveaway ticket killed');
 		message.channel.send(`Hello! the Giveaway category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'GIVEAWAY DISABLED');
 	}
 	else if (message.content.toLowerCase().includes('//gvwy//') && !message.content.toLowerCase().includes('//ye')) {
-		console.log('invalid Giveaway ticket killed');
+		logToConsole('invalid Giveaway ticket killed');
 		message.channel.send('Hello! these tickets are only for entering giveaways!');
 		await closeTicket(message, 'GIVEAWAY INVALID');
 	}
 	else if (message.content.toLowerCase().includes('//pswrd//') && state.killing.unverifiedKill) {
-		console.log('killable Unverified ticket killed');
+		logToConsole('killable Unverified ticket killed');
 		message.channel.send(`Hello! the Unverified category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'UNVERIFIED DISABLED');
 	}
 	else if (message.content.toLowerCase().includes('//pswrd//') && !message.content.toLowerCase().includes('//ye')) {
-		console.log('invalid Unverified ticket killed');
+		logToConsole('invalid Unverified ticket killed');
 		message.channel.send('Hello! these tickets are only for requesting a password reset for your account!');
 		await closeTicket(message, 'UNVERIFIED INVALID');
 	}
 	// if the message contains the correct content for stuff
 	else if (message.content.toLowerCase().includes('//pswrd//') && message.content.toLowerCase().includes('//ye')) {
-		console.log('valid Unverified ticket');
+		logToConsole('valid Unverified ticket');
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Unverified, Reason: ${reason}`;
@@ -128,7 +129,7 @@ async function handleTicket(message) {
 		message.channel.send(messageContent);
 	}
 	else if (message.content.toLowerCase().includes('//gvwy//') && message.content.toLowerCase().includes('//ye')) {
-		console.log('valid Giveaway ticket');
+		logToConsole('valid Giveaway ticket');
 		const understood = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Giveaway Claim, Understood: ${understood}`;
@@ -137,7 +138,7 @@ async function handleTicket(message) {
 	}
 	// if the message doesnt contain the correct code
 	else if (!message.content.toLowerCase().includes(state.killing.ticketCode) && message.content.toLowerCase().includes('//') && state.killing.requireCode) {
-		console.log('invalid ticket killed');
+		logToConsole('invalid ticket killed');
 		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
 		await closeTicket(message, 'INVALID CODE');
 	}
@@ -148,7 +149,7 @@ async function handleTicket(message) {
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		const readStatus = message.embeds[1].description.split('\n')[7].replaceAll('`', '');
 		const game = message.content.split('//')[1];
-		console.log(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}`);
+		logToConsole(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}`);
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nGame: ${game}, Reason: ${reason}, Read? ${readStatus}`;
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
