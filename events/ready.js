@@ -1,6 +1,6 @@
 ﻿const { Events } = require('discord.js');
 const state = require('../state');
-// const later = require('@breejs/later');
+const later = require('@breejs/later');
 const { updateStatusMessage, doLastState, randomizeCode } = require('../statusAndLastState');
 const { ticketCodeRandomSchedule } = require('../config.json');
 
@@ -12,9 +12,11 @@ module.exports = {
 		doLastState();
 		console.log(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);
 		// Schedule the randomizeCode function to run every ticketCodeRandomSchedule seconds
-		setInterval(() => {
-			randomizeCode(client);
-		}, ticketCodeRandomSchedule * 1000);
+		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).second(), t = later.setInterval(function() { randomizeCode(client); }, schedule);
+		// this shoudnt ever run, but if it does, it will stop the interval
+		if (state.ticketCodeMessageId === 2) {
+			t.clear();
+		}
 		await randomizeCode(client);
 		// print the global variables
 		console.log('--------------------------------------------');
