@@ -2,6 +2,7 @@
 const state = require('./state');
 const { EmbedBuilder } = require('discord.js');
 const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode, ticketCodeMessageChannelId } = require('./config.json');
+const { logToConsole } = require('./logger');
 
 function doLastState() {
 	// check if lastState.json exists
@@ -33,14 +34,14 @@ function doLastState() {
 
 			// if any of the values are undefined, rebuild the file
 			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined) {
-				console.log('One or more values in lastState.json are undefined, rebuilding last state...');
+				logToConsole('One or more values in lastState.json are undefined, rebuilding last state...');
 				rebuildLastState();
 			}
 		}
 		catch (error) {
 			// if there is an error reading the file, rebuild it
-			console.log(`${error.message}`);
-			console.log('Error reading lastState.json, rebuilding last state...');
+			logToConsole(`${error.message}`);
+			logToConsole('Error reading lastState.json, rebuilding last state...');
 			rebuildLastState();
 		}
 	}
@@ -71,7 +72,7 @@ function rebuildLastState() {
 		ticketCodeMessageId: 'none',
 	};
 	fs.writeFileSync('./lastState.json', JSON.stringify(lastState, null, 2));
-	console.log('Rebuilt last state.');
+	logToConsole('Rebuilt last state.');
 	doLastState();
 }
 
@@ -131,8 +132,8 @@ async function updateStatusMessage(client) {
 				updateLastState();
 			})
 			.catch(error => {
-				console.log(`${error.message}`);
-				console.log('Error fetching status message, rebuilding last state...');
+				logToConsole(`${error.message}`);
+				logToConsole('Error fetching status message, rebuilding last state...');
 				rebuildLastState();
 			});
 	}
@@ -157,7 +158,7 @@ async function randomizeCode(client) {
 
 	state.killing.ticketCode = code;
 	// print the new ticket code along with the date and time
-	console.log(`[${new Date().toLocaleString()}] New ticket code: ${code}`);
+	logToConsole(`New ticket code: ${code}`);
 	console.log('-----------------------------------------------------');
 	updateLastState();
 
@@ -173,8 +174,8 @@ async function updateCodeMessage(client) {
 				updateLastState();
 			})
 			.catch(error => {
-				console.log(`${error.message}`);
-				console.log('Error fetching code message, rebuilding last state...');
+				logToConsole(`${error.message}`);
+				logToConsole('Error fetching code message, rebuilding last state...');
 				rebuildLastState();
 			});
 	}
