@@ -21,6 +21,7 @@ function doLastState() {
 			state.killing.giveawayKill = lastState.killing.giveawayKill;
 			state.killing.requireCode = lastState.killing.requireCode;
 			state.killing.ticketCode = lastState.killing.ticketCode;
+			state.killing.lastCode = lastState.killing.lastCode;
 			state.killing.randomizeCode = lastState.killing.randomizeCode;
 			// status
 			state.status.apiStatus = lastState.status.apiStatus;
@@ -33,7 +34,7 @@ function doLastState() {
 			state.ticketCodeMessageId = lastState.ticketCodeMessageId;
 
 			// if any of the values are undefined, rebuild the file
-			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined) {
+			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined || state.killing.lastCode === undefined) {
 				logToConsole('One or more values in lastState.json are undefined, rebuilding last state...');
 				rebuildLastState();
 			}
@@ -60,6 +61,7 @@ function rebuildLastState() {
 			giveawayKill: false,
 			requireCode: true,
 			ticketCode: defaultTicketCreationCode,
+			lastCode: defaultTicketCreationCode,
 			randomizeCode: true,
 		},
 		status: {
@@ -156,6 +158,7 @@ async function randomizeCode(client) {
 		code = state.killing.ticketCode;
 	}
 
+	state.killing.lastCode = state.killing.ticketCode;
 	state.killing.ticketCode = code;
 	// print the new ticket code along with the date and time
 	logToConsole(`New ticket code: ${code}`);

@@ -23,6 +23,7 @@ module.exports = {
 		logToConsole(`unverifiedKill: ${state.killing.unverifiedKill}`);
 		logToConsole(`giveawayKill: ${state.killing.giveawayKill}`);
 		logToConsole(`requireCode: ${state.killing.requireCode}`);
+		logToConsole(`lastCode: ${state.killing.lastCode}`);
 		logToConsole(`ticketCreationCode: ${state.killing.ticketCode}`);
 		logToConsole(`randomizeCode: ${state.killing.randomizeCode}`);
 		logToConsole(`apiStatus: ${state.status.apiStatus}`);
