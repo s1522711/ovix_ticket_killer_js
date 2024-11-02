@@ -10,7 +10,7 @@ module.exports = {
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		doLastState();
-		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).hour();
+		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).minute();
 		later.setInterval(async () => {
 			randomizeCode(client);
 		}, schedule);
