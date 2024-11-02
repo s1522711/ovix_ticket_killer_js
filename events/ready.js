@@ -12,7 +12,7 @@ module.exports = {
 		doLastState();
 		console.log(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);
 		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).minute();
-		later.setInterval(async () => {
+		later.setInterval(() => {
 			randomizeCode(client);
 		}, schedule);
 		await randomizeCode(client);
