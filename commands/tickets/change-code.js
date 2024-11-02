@@ -41,6 +41,7 @@ module.exports = {
 			return interaction.editReply({ content: 'The code must be a 4 digit number.', ephemeral: true });
 		}
 
+		state.killing.lastCode = state.killing.ticketCode;
 		state.killing.ticketCode = code;
 		await updateStatusMessage(interaction.client);
 		await updateCodeMessage(interaction.client);

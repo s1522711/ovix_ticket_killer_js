@@ -137,7 +137,7 @@ async function handleTicket(message) {
 		message.channel.send(messageContent);
 	}
 	// if the message doesnt contain the correct code
-	else if (!message.content.toLowerCase().includes(state.killing.ticketCode) && message.content.toLowerCase().includes('//') && state.killing.requireCode) {
+	else if (!(message.content.toLowerCase().includes(state.killing.ticketCode) || message.content.toLowerCase().includes(state.killing.lastCode)) && message.content.toLowerCase().includes('//') && state.killing.requireCode) {
 		logToConsole('invalid ticket killed');
 		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
 		await closeTicket(message, 'INVALID CODE');

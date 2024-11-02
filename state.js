@@ -7,6 +7,7 @@
 		giveawayKill: false,
 		requireCode: false,
 		ticketCode: 'none',
+		lastCode: 'none',
 		randomizeCode: false,
 	},
 	status: {
