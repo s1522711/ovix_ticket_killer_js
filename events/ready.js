@@ -10,12 +10,14 @@ module.exports = {
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		doLastState();
+		console.log(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);
 		const schedule = later.parse.recur().every(ticketCodeRandomSchedule).minute();
 		later.setInterval(async () => {
 			randomizeCode(client);
 		}, schedule);
 		await randomizeCode(client);
 		// print the global variables
+		console.log('--------------------------------------------');
 		console.log(`gtaKill: ${state.killing.gtaKill}`);
 		console.log(`rdr2Kill: ${state.killing.rdr2Kill}`);
 		console.log(`cs2Kill: ${state.killing.cs2Kill}`);
