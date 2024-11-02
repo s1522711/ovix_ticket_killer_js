@@ -32,7 +32,7 @@ module.exports = {
 		logToConsole(`statusMessageId: ${state.statusMessageId}`);
 		logToConsole(`ticketCodeMessageId: ${state.ticketCodeMessageId}`);
 		updateStatusMessage(client);
-		console.log('-----------------------------------------------------');
+		console.log('----------------------------------------------------------------------------');
 	},
 };
 
