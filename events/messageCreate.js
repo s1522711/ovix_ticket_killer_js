@@ -145,15 +145,17 @@ async function handleTicket(message) {
 	// if the message contains the correct content for the rest of the tickets
 	else if (message.content.toLowerCase().includes('//')) {
 		// randomize the code after a good ticket is opened
-		await randomizeCode(message.client);
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		const readStatus = message.embeds[1].description.split('\n')[7].replaceAll('`', '');
 		const game = message.content.split('//')[1];
-		logToConsole(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}`);
+		const code = message.content.split('//')[2];
+		logToConsole(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}, code: ${code}`);
+		if (message.content.includes(state.killing.lastCode)) logToConsole('Last code used'); else logToConsole('New code used');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nGame: ${game}, Reason: ${reason}, Read? ${readStatus}`;
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
 		message.channel.send(messageContent);
+		await randomizeCode(message.client);
 	}
 }
 
