@@ -84,7 +84,11 @@ async function handleMention(message) {
 }
 
 async function handleTicket(message) {
-	if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
+	if (!message.content.includes('//'))
+	{
+		return;
+	}
+	else if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
 		logToConsole('GTA ticket killed');
 		message.channel.send(`Hello! the Gta category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
 		await closeTicket(message, 'GTA DISABLED');
@@ -138,8 +142,14 @@ async function handleTicket(message) {
 	}
 	// if the message doesnt contain the correct code
 	else if (!(message.content.toLowerCase().includes(state.killing.ticketCode) || message.content.toLowerCase().includes(state.killing.lastCode)) && message.content.toLowerCase().includes('//') && state.killing.requireCode) {
-		logToConsole('invalid ticket killed');
+		logToConsole('invalid ticket killed - doesnt contain code');
 		message.channel.send('Hello! this is an invalid ticket, please make sure you are using the correct code.');
+		await closeTicket(message, 'INVALID CODE');
+	}
+	// if the message doesnt contain yes in the right embed field
+	else if (!message.embeds[1].description.toLowerCase().split('**have you read #common-questions?**')[1].split('\n')[1].includes('ye') && message.content.toLowerCase().includes('//')) {
+		logToConsole('invalid ticket killed - doesnt contain yes');
+		message.channel.send('Hello! this is an invalid ticket, please make sure you that you have read the common questions!');
 		await closeTicket(message, 'INVALID CODE');
 	}
 	// if the message contains the correct content for the rest of the tickets
