@@ -27,7 +27,7 @@ module.exports = {
 
 		// Close the channel
 		await new Promise(resolve => setTimeout(resolve, 500));
-		await channel.send(`$close Bot autoclose - <@${interaction.user.id}>`);
+		await channel.send(`$close Bot autoclose - ${interaction.user.tag}`);
 		await new Promise(resolve => setTimeout(resolve, 500));
 		await channel.send('$transcript');
 		await new Promise(resolve => setTimeout(resolve, 500));
