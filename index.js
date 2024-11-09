@@ -8,6 +8,7 @@ logToConsole('Starting bot...');
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers] });
+
 // export the global variables to be used in other files
 
 // Create a new Collection to hold your commands

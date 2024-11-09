@@ -3,11 +3,14 @@ const state = require('../state');
 const { updateStatusMessage, doLastState, randomizeCode } = require('../statusAndLastState');
 const { ticketCodeRandomSchedule } = require('../config.json');
 const { logToConsole } = require('../logger');
+const { Timeouts } = require('../timeoutsDb');
 
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(client) {
+		// Create the timeouts table if it doesn't exist
+		await Timeouts.sync();
 		logToConsole(`Ready! Logged in as ${client.user.tag}`);
 		doLastState();
 		logToConsole(`time to randomize code: ${ticketCodeRandomSchedule} minutes`);

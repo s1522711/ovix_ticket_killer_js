@@ -5,6 +5,7 @@ const { randomizeCode } = require('../statusAndLastState');
 // get the user ID from the config.json file imported in the index.js file
 const { tickettoolId, statusChannelId, staffRoleId, trialStaffRoleId, staffChatId, autoDeleteChannelIds, autoDeleteTime, clientId, pingTimeoutTime } = require('../config.json');
 const { logToConsole } = require('../logger');
+const { Timeouts } = require('../timeoutsDb');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -65,14 +66,34 @@ async function handleMention(message) {
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
-			logToConsole(`Mentioned user ${member[1].user.tag} has a staff role.`);
-			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
+			// look for the user in the timeouts table and get all the data
+			const [timeout] = await Timeouts.findOrCreate({ where: { user_id: message.author.id } });
+			// if the last ping was more than a week ago or the user has never pinged staff
+			if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 604800000) {
+			// if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 30 * 1000) {
+				// set the last ping to the current time
+				timeout.last_ping = new Date();
+				// set the amount of pings to 1
+				timeout.amount = 1;
+				// save the data to the database
+				await timeout.save();
+			}
+			// if the last ping was less than a week ago
+			else {
+				// increment the amount of pings
+				timeout.amount++;
+				// save the data to the database
+				await timeout.save();
+			}
 
+			logToConsole(`Mentioned user ${member[1].user.tag} has a staff role. Timeout amount: ${timeout.amount}, Last ping: ${timeout.last_ping}`);
+			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
 			// send a message to the staff chat
-			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>`);
+			const expiryTimestamp = `<t:${Math.round((timeout.last_ping.getTime() + 604800000) / 1000)}:d>`;
+			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount} ping this week. Their multiplier expires on ${expiryTimestamp}.`);
 
 			// timeout the user for a certain amount of time
-			message.member.timeout(pingTimeoutTime * 1000, 'bot auto-timeout for pinging staff');
+			message.member.timeout(pingTimeoutTime * 1000 * timeout.amount, `bot auto-timeout for pinging staff - ${timeout.amount} times this week`);
 
 			for (let i = 0; i < 5; i++) {
 				message.channel.send(`Please dont ping staff! <@${message.author.id}>`);
@@ -84,9 +105,8 @@ async function handleMention(message) {
 }
 
 async function handleTicket(message) {
-	if (!message.content.includes('//'))
-	{
-		return;
+	if (!message.content.includes('//')) {
+		// pass
 	}
 	else if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
 		logToConsole('GTA ticket killed');
