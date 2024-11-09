@@ -21,7 +21,8 @@ const Timeouts = sequelize.define('timeouts', {
 	},
 	last_ping: {
 		type: Sequelize.DATE,
-		allowNull: true,
+		allowNull: false,
+		defaultValue: Sequelize.NOW,
 	},
 });
 

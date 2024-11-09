@@ -82,6 +82,8 @@ async function handleMention(message) {
 			else {
 				// increment the amount of pings
 				timeout.amount++;
+				// set the last ping to the current time
+				timeout.last_ping = new Date();
 				// save the data to the database
 				await timeout.save();
 			}
