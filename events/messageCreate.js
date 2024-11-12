@@ -67,7 +67,7 @@ async function handleMention(message) {
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
 			// look for the user in the timeouts table and get all the data
-			const [timeout] = await Timeouts.findOrCreate({ where: { user_id: message.author.id } });
+			const [timeout] = await Timeouts.findOrCreate({ where: { user_id: message.author.id }, defaults: { amount: 0 } });
 			// if the last ping was more than a week ago or the user has never pinged staff
 			if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 604800000) {
 			// if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 30 * 1000) {
@@ -92,7 +92,7 @@ async function handleMention(message) {
 			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
 			// send a message to the staff chat
 			const expiryTimestamp = `<t:${Math.round((timeout.last_ping.getTime() + 604800000) / 1000)}:d>`;
-			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount} ping this week. Their multiplier expires on ${expiryTimestamp}.`);
+			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Their multiplier expires on ${expiryTimestamp}.`);
 
 			// timeout the user for a certain amount of time
 			message.member.timeout(pingTimeoutTime * 1000 * timeout.amount, `bot auto-timeout for pinging staff - ${timeout.amount} times this week`);
@@ -102,8 +102,18 @@ async function handleMention(message) {
 				await new Promise(resolve => setTimeout(resolve, 1000));
 			}
 			message.channel.send('Hope you understand :)');
+			if (timeout.amount !== 1) {
+				message.channel.send(`\`By the way, you might have noticed that your timeout is longer than before, this is because this is your ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Your multiplier expires on \`${expiryTimestamp}\`.\``);
+			}
 		}
 	}
+}
+
+function properNumberSuffix(number) {
+	if (number === 1) return 'st';
+	if (number === 2) return 'nd';
+	if (number === 3) return 'rd';
+	return 'th';
 }
 
 async function handleTicket(message) {
