@@ -92,7 +92,7 @@ async function handleMention(message) {
 			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
 			// send a message to the staff chat
 			const expiryTimestamp = `<t:${Math.round((timeout.last_ping.getTime() + 604800000) / 1000)}:d>`;
-			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Their multiplier expires on ${expiryTimestamp}.`);
+			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Their multiplier expires on ${expiryTimestamp}. the user's timeout expires on <t:${Math.round(new Date().getTime() / 1000) + pingTimeoutTime * timeout.amount}:R>`);
 
 			// timeout the user for a certain amount of time
 			message.member.timeout(pingTimeoutTime * 1000 * timeout.amount, `bot auto-timeout for pinging staff - ${timeout.amount} times this week`);
