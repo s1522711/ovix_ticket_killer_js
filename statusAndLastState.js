@@ -160,7 +160,7 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(gtaBody),
 	};
-	await fetch(`${statpingApiUrl}/services/ovix-gta`, gtaOptions);
+	await fetch(`${statpingApiUrl}/services/1`, gtaOptions);
 	// then rdr2
 	const rdr2Body = {
 		'online': state.status.rdr2Status === 1,
@@ -172,7 +172,7 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(rdr2Body),
 	};
-	await fetch(`${statpingApiUrl}/services/ovix-rdr2`, rdr2Options);
+	await fetch(`${statpingApiUrl}/services/2`, rdr2Options);
 	// then cs2
 	const cs2Body = {
 		'online': state.status.cs2Status === 1,
@@ -184,7 +184,7 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(cs2Body),
 	};
-	await fetch(`${statpingApiUrl}/services/ovix-cs2`, cs2Options);
+	await fetch(`${statpingApiUrl}/services/3`, cs2Options);
 	// finally the api
 	/*
 	const apiBody = {
