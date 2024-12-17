@@ -149,6 +149,14 @@ async function updateStatusMessage(client) {
 
 async function updateStatpingStatus() {
 	const headers = { 'Authorization': `Bearer ${statpingApiToken}` };
+	// do a quick get request to see if the server is online
+	const options = {
+		method: 'GET',
+		headers: headers,
+	};
+	let response = await fetch(`${statpingApiUrl}/services`, options);
+	logToConsole(`Statping API response: ${response.status}`);
+
 	// first do gta
 	const gtaBody = {
 		'online': state.status.gtaStatus === 1,
@@ -160,7 +168,8 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(gtaBody),
 	};
-	await fetch(`${statpingApiUrl}/services/1`, gtaOptions);
+	response = await fetch(`${statpingApiUrl}/services/1`, gtaOptions);
+	logToConsole(`Statping GTA response: ${response.status}`);
 	// then rdr2
 	const rdr2Body = {
 		'online': state.status.rdr2Status === 1,
@@ -172,7 +181,8 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(rdr2Body),
 	};
-	await fetch(`${statpingApiUrl}/services/2`, rdr2Options);
+	response = await fetch(`${statpingApiUrl}/services/2`, rdr2Options);
+	logToConsole(`Statping RDR2 response: ${response.status}`);
 	// then cs2
 	const cs2Body = {
 		'online': state.status.cs2Status === 1,
@@ -184,7 +194,8 @@ async function updateStatpingStatus() {
 		headers: headers,
 		body: JSON.stringify(cs2Body),
 	};
-	await fetch(`${statpingApiUrl}/services/3`, cs2Options);
+	response = await fetch(`${statpingApiUrl}/services/3`, cs2Options);
+	logToConsole(`Statping CS2 response: ${response.status}`);
 	// finally the api
 	/*
 	const apiBody = {
