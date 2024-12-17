@@ -1,7 +1,7 @@
 ﻿const fs = require('fs');
 const state = require('./state');
 const { EmbedBuilder } = require('discord.js');
-const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode, ticketCodeMessageChannelId } = require('./config.json');
+const { statusChannelId, upEmoji, downEmoji, updatingEmoji, defaultTicketCreationCode, ticketCodeMessageChannelId, statpingApiToken, statpingApiUrl } = require('./config.json');
 const { logToConsole } = require('./logger');
 
 function doLastState() {
@@ -103,6 +103,7 @@ function updateLastState() {
 }
 
 async function updateStatusMessage(client) {
+	updateStatpingStatus();
 	updateLastState();
 	const embed1 = new EmbedBuilder()
 		.setTitle('Status Guide')
@@ -111,7 +112,7 @@ async function updateStatusMessage(client) {
 	const embed2GtaLine = `Grand Theft Auto 5: ${state.status.gtaStatus === 1 ? upEmoji : state.status.gtaStatus === 0 ? downEmoji : updatingEmoji}`;
 	const embed2Rdr2Line = `Red Dead Redemption 2: ${state.status.rdr2Status === 1 ? upEmoji : state.status.rdr2Status === 0 ? downEmoji : updatingEmoji}`;
 	const embed2Cs2Line = `Counter-Strike 2: ${state.status.cs2Status === 1 ? upEmoji : state.status.cs2Status === 0 ? downEmoji : updatingEmoji}`;
-	const embed2ApiLine = `API: ${state.status.apiStatus === 1 ? upEmoji : state.status.apiStatus === 0 ? downEmoji : updatingEmoji}`;
+	const embed2ApiLine = `Website and API: ${state.status.apiStatus === 1 ? upEmoji : state.status.apiStatus === 0 ? downEmoji : updatingEmoji}`;
 	const embed2 = new EmbedBuilder()
 		.setTitle('Product Status')
 		.setDescription(`${embed2GtaLine}\n${embed2Rdr2Line}\n${embed2Cs2Line}\n${embed2ApiLine}`)
@@ -144,6 +145,60 @@ async function updateStatusMessage(client) {
 		state.statusMessageId = sent.id;
 		updateLastState();
 	}
+}
+
+async function updateStatpingStatus() {
+	const headers = { 'Authorization': `Bearer ${statpingApiToken}` };
+	// first do gta
+	const gtaBody = {
+		'online': state.status.gtaStatus === 1,
+		'latency': 0,
+		'issue': state.status.gtaStatus === 1 ? '' : 'Offline',
+	};
+	const gtaOptions = {
+		method: 'PATCH',
+		headers: headers,
+		body: JSON.stringify(gtaBody),
+	};
+	await fetch(`${statpingApiUrl}/services/ovix-gta`, gtaOptions);
+	// then rdr2
+	const rdr2Body = {
+		'online': state.status.rdr2Status === 1,
+		'latency': 0,
+		'issue': state.status.rdr2Status === 1 ? '' : 'Offline',
+	};
+	const rdr2Options = {
+		method: 'PATCH',
+		headers: headers,
+		body: JSON.stringify(rdr2Body),
+	};
+	await fetch(`${statpingApiUrl}/services/ovix-rdr2`, rdr2Options);
+	// then cs2
+	const cs2Body = {
+		'online': state.status.cs2Status === 1,
+		'latency': 0,
+		'issue': state.status.cs2Status === 1 ? '' : 'Offline',
+	};
+	const cs2Options = {
+		method: 'PATCH',
+		headers: headers,
+		body: JSON.stringify(cs2Body),
+	};
+	await fetch(`${statpingApiUrl}/services/ovix-cs2`, cs2Options);
+	// finally the api
+	/*
+	const apiBody = {
+		'online': state.status.apiStatus === 1,
+		'latency': 0,
+		'issue': state.status.apiStatus === 1 ? '' : 'Offline',
+	};
+	const apiOptions = {
+		method: 'PATCH',
+		headers: headers,
+		body: JSON.stringify(apiBody),
+	};
+	await fetch(`${statpingApiUrl}/services/ovix-api`, apiOptions);
+	*/
 }
 
 async function randomizeCode(client) {

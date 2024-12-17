@@ -16,5 +16,7 @@
   "downEmoji": ":red_circle:",
   "upEmoji": ":green_circle:",
   "updatingEmoji": ":yellow_circle:",
-  "pingTimeoutTime": 5
+  "pingTimeoutTime": 5,
+  "statpingApiToken": "api token here",
+  "statpingApiUrl": "urlhere.com/api"
 }

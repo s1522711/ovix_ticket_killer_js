@@ -27,6 +27,8 @@ A discord.js rewrite of my small and shitty discord.py bot made for ovix to auto
   "downEmoji": ":red_circle:",
   "upEmoji": ":green_circle:",
   "updatingEmoji": ":yellow_circle:",
-  "pingTimeoutTime": 5
+  "pingTimeoutTime": 5,
+  "statpingApiToken": "api token here",
+  "statpingApiUrl": "urlhere.com/api"
 }
 ```
