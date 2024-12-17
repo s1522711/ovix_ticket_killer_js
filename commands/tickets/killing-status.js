@@ -19,6 +19,6 @@ module.exports = {
 		const giveawayEmoji = state.killing.giveawayKill ? downEmoji : upEmoji;
 		const requireCode = state.killing.requireCode ? 'yes' : 'no';
 		const randomizeCode = state.killing.randomizeCode ? 'yes' : 'no';
-		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${requireCode}, code: \`${state.killing.ticketCode}\`\nRandomize code: ${randomizeCode}, interval: \`${ticketCodeRandomSchedule} minutes\``);
+		interaction.reply(`Killing status of tickets:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nUnverified: ${unverifiedEmoji}\nGiveaway: ${giveawayEmoji}\nRequire code: ${requireCode}, code: \`${state.killing.ticketCode}\`, old code: \`${state.killing.lastCode}\`\nRandomize code: ${randomizeCode}, interval: \`${ticketCodeRandomSchedule} minutes\``);
 	},
 };
