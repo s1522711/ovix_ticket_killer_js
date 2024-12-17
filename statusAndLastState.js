@@ -148,13 +148,11 @@ async function updateStatusMessage(client) {
 }
 
 async function updateStatpingStatus() {
-	const headers = { 'Authorization': `Bearer ${statpingApiToken}` };
 	// do a quick get request to see if the server is online
 	const options = {
 		method: 'GET',
-		headers: headers,
 	};
-	let response = await fetch(`${statpingApiUrl}/services`, options);
+	let response = await fetch(`${statpingApiUrl}/services?api=${statpingApiToken}`, options);
 	logToConsole(`Statping API response: ${response.status}`);
 
 	// first do gta
@@ -165,10 +163,9 @@ async function updateStatpingStatus() {
 	};
 	const gtaOptions = {
 		method: 'PATCH',
-		headers: headers,
 		body: JSON.stringify(gtaBody),
 	};
-	response = await fetch(`${statpingApiUrl}/services/1`, gtaOptions);
+	response = await fetch(`${statpingApiUrl}/services/1?api=${statpingApiToken}`, gtaOptions);
 	logToConsole(`Statping GTA response: ${response.status}`);
 	// then rdr2
 	const rdr2Body = {
@@ -178,10 +175,9 @@ async function updateStatpingStatus() {
 	};
 	const rdr2Options = {
 		method: 'PATCH',
-		headers: headers,
 		body: JSON.stringify(rdr2Body),
 	};
-	response = await fetch(`${statpingApiUrl}/services/2`, rdr2Options);
+	response = await fetch(`${statpingApiUrl}/services/2?api=${statpingApiToken}`, rdr2Options);
 	logToConsole(`Statping RDR2 response: ${response.status}`);
 	// then cs2
 	const cs2Body = {
@@ -191,10 +187,9 @@ async function updateStatpingStatus() {
 	};
 	const cs2Options = {
 		method: 'PATCH',
-		headers: headers,
 		body: JSON.stringify(cs2Body),
 	};
-	response = await fetch(`${statpingApiUrl}/services/3`, cs2Options);
+	response = await fetch(`${statpingApiUrl}/services/3?api=${statpingApiToken}`, cs2Options);
 	logToConsole(`Statping CS2 response: ${response.status}`);
 	// finally the api
 	/*
@@ -205,10 +200,9 @@ async function updateStatpingStatus() {
 	};
 	const apiOptions = {
 		method: 'PATCH',
-		headers: headers,
 		body: JSON.stringify(apiBody),
 	};
-	await fetch(`${statpingApiUrl}/services/ovix-api`, apiOptions);
+	await fetch(`${statpingApiUrl}/services/ovix-api?api=${statpingApiToken}`, apiOptions);
 	*/
 }
 
