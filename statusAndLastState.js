@@ -152,8 +152,15 @@ async function updateStatpingStatus() {
 	const options = {
 		method: 'GET',
 	};
-	let response = await fetch(`${statpingApiUrl}/services?api=${statpingApiToken}`, options);
-	logToConsole(`Statping API response: ${response.status}`);
+	let response;
+	try {
+		response = await fetch(`${statpingApiUrl}/services?api=${statpingApiToken}`, options);
+		logToConsole(`Statping API response: ${response.status}`);
+	}
+	catch (error) {
+		logToConsole(`Statping API error: ${error.message}`);
+		return;
+	}
 
 	// first do gta
 	const gtaBody = {
