@@ -25,9 +25,9 @@ module.exports = {
 		}
 		// if the message mentions any user
 		else if (message.mentions.users.size > 0) {
-			await handleMention(message);
+			await detectMention(message);
 		}
-	},
+	}, handleMention,
 };
 
 async function handleAutoDelete(message) {
@@ -52,17 +52,20 @@ async function handleAutoDelete(message) {
 }
 
 
-async function handleMention(message) {
+async function detectMention(message) {
 	// if the message author is a staff member / trial staff member / a bot / admin\
 	if (message.member.roles.cache.has(staffRoleId) || message.member.roles.cache.has(trialStaffRoleId) || message.author.bot || message.member.permissions.has('0x0000000000000008')) {
 		return;
 	}
 
-	// if the message is a reply to a message, ignore it
 	if (message.reference) {
 		return;
 	}
 
+	await handleMention(message, false);
+}
+
+async function handleMention(message, isGhostPing) {
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
 		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
@@ -70,7 +73,7 @@ async function handleMention(message) {
 			const [timeout] = await Timeouts.findOrCreate({ where: { user_id: message.author.id }, defaults: { amount: 0 } });
 			// if the last ping was more than a week ago or the user has never pinged staff
 			if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 604800000) {
-			// if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 30 * 1000) {
+				// if (!timeout.last_ping || (Date.now() - timeout.last_ping.getTime()) > 30 * 1000) {
 				// set the last ping to the current time
 				timeout.last_ping = new Date();
 				// set the amount of pings to 1
@@ -89,16 +92,16 @@ async function handleMention(message) {
 			}
 
 			logToConsole(`Mentioned user ${member[1].user.tag} has a staff role. Timeout amount: ${timeout.amount}, Last ping: ${timeout.last_ping}`);
-			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}`);
+			logToConsole(`Message: ${message.content}, Author: ${message.author.tag}, Channel: ${message.channel.name}, category: ${message.channel.parent.name}, isGhostPing: ${isGhostPing}`);
 			// send a message to the staff chat
 			const expiryTimestamp = `<t:${Math.round((timeout.last_ping.getTime() + 604800000) / 1000)}:d>`;
-			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}> pinged staff in <#${message.channel.id}>, this is their ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Their multiplier expires on ${expiryTimestamp}. the user's timeout expires on <t:${Math.round(new Date().getTime() / 1000) + pingTimeoutTime * timeout.amount}:R>`);
+			await message.client.channels.cache.get(staffChatId).send(`<@${message.author.id}>${isGhostPing ? ' ghost' : ' '}pinged staff in <#${message.channel.id}>, this is their ${timeout.amount}${properNumberSuffix(timeout.amount)} ping this week. Their multiplier expires on ${expiryTimestamp}. the user's timeout expires on <t:${Math.round(new Date().getTime() / 1000) + pingTimeoutTime * timeout.amount}:R>`);
 
 			// timeout the user for a certain amount of time
 			message.member.timeout(pingTimeoutTime * 1000 * timeout.amount, `bot auto-timeout for pinging staff - ${timeout.amount} times this week`);
 
 			for (let i = 0; i < 5; i++) {
-				message.channel.send(`Please dont ping staff! <@${message.author.id}>`);
+				message.channel.send(`Please dont${isGhostPing ? ' ghost' : ' '}ping staff! <@${message.author.id}>`);
 				await new Promise(resolve => setTimeout(resolve, 1000));
 			}
 			message.channel.send('Hope you understand :)');
