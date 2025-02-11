@@ -15,7 +15,7 @@
   "description": "rewrite of the ovix ticket killer bot in js",
   "repository": "github:s1522711/ovix_ticket_killer_js",
   "dependencies": {
-    "discord.js": "^14.16.3",
+    "discord.js": "^14.18.0",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7"
   },
