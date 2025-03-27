@@ -16,6 +16,7 @@ module.exports = {
 		const rdr2Emoji = state.status.rdr2Status === 1 ? upEmoji : state.status.rdr2Status === 0 ? downEmoji : updatingEmoji;
 		const cs2Emoji = state.status.cs2Status === 1 ? upEmoji : state.status.cs2Status === 0 ? downEmoji : updatingEmoji;
 		const apiEmoji = state.status.apiStatus === 1 ? upEmoji : state.status.apiStatus === 0 ? downEmoji : updatingEmoji;
-		interaction.reply(`Product status:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nAPI: ${apiEmoji}`);
+		const recoveryEmoji = state.killing.recoveryKill === false ? upEmoji : state.killing.recoveryKill === true ? downEmoji : updatingEmoji;
+		interaction.reply(`Product status:\nGTA: ${gtaEmoji}\nRDR2: ${rdr2Emoji}\nCS2: ${cs2Emoji}\nAPI: ${apiEmoji}\nRecovery: ${recoveryEmoji}`);
 	},
 };

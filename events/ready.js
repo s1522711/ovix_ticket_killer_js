@@ -25,6 +25,7 @@ module.exports = {
 		logToConsole(`cs2Kill: ${state.killing.cs2Kill}`);
 		logToConsole(`unverifiedKill: ${state.killing.unverifiedKill}`);
 		logToConsole(`giveawayKill: ${state.killing.giveawayKill}`);
+		logToConsole(`recoveryKill: ${state.killing.recoveryKill}`);
 		logToConsole(`requireCode: ${state.killing.requireCode}`);
 		logToConsole(`lastCode: ${state.killing.lastCode}`);
 		logToConsole(`ticketCreationCode: ${state.killing.ticketCode}`);

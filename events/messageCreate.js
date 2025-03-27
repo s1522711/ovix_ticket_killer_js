@@ -123,6 +123,11 @@ async function handleTicket(message) {
 	if (!message.content.includes('//')) {
 		// pass
 	}
+	else if (message.content.toLowerCase().includes('//rcvry//') && state.killing.recoveryKill) {
+		logToConsole('Recovery ticket killed');
+		message.channel.send(`Hello! the Recovery service is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
+		await closeTicket(message, 'RECOVERY DISABLED');
+	}
 	else if (message.content.toLowerCase().includes('//gta') && state.killing.gtaKill) {
 		logToConsole('GTA ticket killed');
 		message.channel.send(`Hello! the Gta category is currently closed, please check <#${statusChannelId}> to see when it will be available again.`);
@@ -159,6 +164,15 @@ async function handleTicket(message) {
 		await closeTicket(message, 'UNVERIFIED INVALID');
 	}
 	// if the message contains the correct content for stuff
+	else if (message.content.toLowerCase().includes('//rcvry//')) {
+		logToConsole('valid Recovery ticket');
+		const username = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
+		const game = message.embeds[1].description.split('\n')[3].replaceAll('`', '');
+		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
+		messageContent += `\nType: Recovery, Username: ${username}, Game: ${game}`;
+		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
+		message.channel.send(messageContent);
+	}
 	else if (message.content.toLowerCase().includes('//pswrd//') && message.content.toLowerCase().includes('//ye')) {
 		logToConsole('valid Unverified ticket');
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
