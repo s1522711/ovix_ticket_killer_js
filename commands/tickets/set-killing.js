@@ -26,6 +26,7 @@ module.exports = {
 					{ name: 'CS2', value: 'cs2' },
 					{ name: 'Unverified', value: 'unverified' },
 					{ name: 'Giveaway', value: 'giveaway' },
+					{ name: 'Recovery Serivce', value: 'recovery' },
 					{ name: 'Require Code', value: 'requireCode' },
 					{ name: 'Randomize Code', value: 'randomizeCode' },
 				)),
@@ -52,6 +53,9 @@ module.exports = {
 			break;
 		case 'giveaway':
 			state.killing.giveawayKill = killing;
+			break;
+		case 'recovery':
+			state.killing.recoveryKill = killing;
 			break;
 		case 'requireCode':
 			state.killing.requireCode = killing;

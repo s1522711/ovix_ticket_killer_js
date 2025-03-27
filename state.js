@@ -5,6 +5,7 @@
 		cs2Kill: false,
 		unverifiedKill: false,
 		giveawayKill: false,
+		recoveryKill: false,
 		requireCode: false,
 		ticketCode: 'none',
 		lastCode: 'none',

@@ -26,6 +26,7 @@ module.exports = {
 					{ name: 'RDR2', value: 'rdr2' },
 					{ name: 'CS2', value: 'cs2' },
 					{ name: 'API', value: 'api' },
+					{ name: 'Recovery Service', value: 'recovery' },
 				)),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(modRoleId) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -47,6 +48,15 @@ module.exports = {
 			break;
 		case 'api':
 			state.status.apiStatus = status === 'up' ? 1 : status === 'down' ? 0 : 2;
+			break;
+		case 'recovery':
+			state.killing.recoveryKill = status === 'up' ? false : status === 'down' ? true : state.killing.recoveryKill;
+			if (status === 'updating') {
+				return interaction.reply({
+					content: 'Recovery service status cannot be set to updating.',
+					ephemeral: true,
+				});
+			}
 			break;
 		default:
 			return interaction.reply({ content: 'Invalid product type.', ephemeral: true });

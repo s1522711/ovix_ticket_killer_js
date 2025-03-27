@@ -19,6 +19,7 @@ function doLastState() {
 			state.killing.cs2Kill = lastState.killing.cs2Kill;
 			state.killing.unverifiedKill = lastState.killing.unverifiedKill;
 			state.killing.giveawayKill = lastState.killing.giveawayKill;
+			state.killing.recoveryKill = lastState.killing.recoveryKill;
 			state.killing.requireCode = lastState.killing.requireCode;
 			state.killing.ticketCode = lastState.killing.ticketCode;
 			state.killing.lastCode = lastState.killing.lastCode;
@@ -34,7 +35,7 @@ function doLastState() {
 			state.ticketCodeMessageId = lastState.ticketCodeMessageId;
 
 			// if any of the values are undefined, rebuild the file
-			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined || state.killing.lastCode === undefined) {
+			if (state.killing.gtaKill === undefined || state.killing.rdr2Kill === undefined || state.killing.cs2Kill === undefined || state.killing.unverifiedKill === undefined || state.killing.giveawayKill === undefined || state.killing.recoveryKill === undefined || state.status.apiStatus === undefined || state.status.gtaStatus === undefined || state.status.rdr2Status === undefined || state.status.cs2Status === undefined || state.statusMessageId === undefined || state.statusMessageId === '' || state.killing.ticketCode === undefined || state.killing.ticketCode === '' || state.killing.requireCode === undefined || state.ticketCodeMessageId === undefined || state.ticketCodeMessageId === '' || state.killing.randomizeCode === undefined || state.killing.lastCode === undefined) {
 				logToConsole('One or more values in lastState.json are undefined, rebuilding last state...');
 				rebuildLastState();
 			}
@@ -59,6 +60,7 @@ function rebuildLastState() {
 			cs2Kill: false,
 			unverifiedKill: false,
 			giveawayKill: false,
+			recoveryKill: false,
 			requireCode: true,
 			ticketCode: defaultTicketCreationCode,
 			lastCode: defaultTicketCreationCode,
@@ -87,6 +89,7 @@ function updateLastState() {
 			cs2: state.cs2Kill,
 			unverified: state.unverifiedKill,
 			giveaway: state.giveawayKill,
+			recovery: state.recoveryKill,
 			requireCode: state.requireCode,
 			ticketCode: state.ticketCode,
 		},
@@ -113,18 +116,20 @@ async function updateStatusMessage(client) {
 	const embed2Rdr2Line = `Red Dead Redemption 2: ${state.status.rdr2Status === 1 ? upEmoji : state.status.rdr2Status === 0 ? downEmoji : updatingEmoji}`;
 	const embed2Cs2Line = `Counter-Strike 2: ${state.status.cs2Status === 1 ? upEmoji : state.status.cs2Status === 0 ? downEmoji : updatingEmoji}`;
 	const embed2ApiLine = `Website and API: ${state.status.apiStatus === 1 ? upEmoji : state.status.apiStatus === 0 ? downEmoji : updatingEmoji}`;
+	const embed2RecoveryLine = `Recovery Service: ${state.killing.recoveryKill ? downEmoji : upEmoji}`;
 	const embed2 = new EmbedBuilder()
 		.setTitle('Product Status')
-		.setDescription(`${embed2GtaLine}\n${embed2Rdr2Line}\n${embed2Cs2Line}\n${embed2ApiLine}`)
+		.setDescription(`${embed2GtaLine}\n${embed2Rdr2Line}\n${embed2Cs2Line}\n${embed2ApiLine}\n${embed2RecoveryLine}`)
 		.setColor('DarkGrey');
 	const embed3GtaLine = `Grand Theft Auto 5: ${state.killing.gtaKill ? downEmoji : upEmoji}`;
 	const embed3Rdr2Line = `Red Dead Redemption 2: ${state.killing.rdr2Kill ? downEmoji : upEmoji}`;
 	const embed3Cs2Line = `Counter-Strike 2: ${state.killing.cs2Kill ? downEmoji : upEmoji}`;
 	const embed3UnverifiedLine = `Unverified: ${state.killing.unverifiedKill ? downEmoji : upEmoji}`;
 	const embed3GiveawayLine = `Giveaway: ${state.killing.giveawayKill ? downEmoji : upEmoji}`;
+	const embed3RecoveryLine = `Recovery Service: ${state.killing.recoveryKill ? downEmoji : upEmoji}`;
 	const embed3 = new EmbedBuilder()
 		.setTitle('Ticket Status')
-		.setDescription(`${embed3GtaLine}\n${embed3Rdr2Line}\n${embed3Cs2Line}\n${embed3UnverifiedLine}\n${embed3GiveawayLine}`)
+		.setDescription(`${embed3GtaLine}\n${embed3Rdr2Line}\n${embed3Cs2Line}\n${embed3UnverifiedLine}\n${embed3GiveawayLine}\n${embed3RecoveryLine}`)
 		.setColor('DarkGrey');
 
 
