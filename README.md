@@ -32,3 +32,5 @@ A discord.js rewrite of my small and shitty discord.py bot made for ovix to auto
   "statpingApiUrl": "urlhere.com/api"
 }
 ```
+
+WOO HOOO
