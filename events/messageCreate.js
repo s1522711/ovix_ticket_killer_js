@@ -68,7 +68,7 @@ async function detectMention(message) {
 async function handleMention(message, isGhostPing) {
 	const mentionedUsers = message.mentions.members;
 	for (const member of mentionedUsers) {
-		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId)) {
+		if (member[1].roles.cache.has(staffRoleId) || member[1].roles.cache.has(trialStaffRoleId) || member[1].permissions.has('0x0000000000000008')) {
 			// look for the user in the timeouts table and get all the data
 			const [timeout] = await Timeouts.findOrCreate({ where: { user_id: message.author.id }, defaults: { amount: 0 } });
 			// if the last ping was more than a week ago or the user has never pinged staff
