@@ -64,7 +64,7 @@ module.exports = {
 		case 'randomizeCode':
 			state.killing.randomizeCode = killing;
 			break;
-		case 'allTickets':
+		case 'allMainTickets':
 			state.killing.gtaKill = killing;
 			state.killing.rdr2Kill = killing;
 			state.killing.cs2Kill = killing;
