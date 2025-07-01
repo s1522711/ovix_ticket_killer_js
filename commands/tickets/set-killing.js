@@ -82,6 +82,9 @@ module.exports = {
 		else if (ticket === 'randomizeCode') {
 			interaction.reply(`Randomize code set to ${killing ? 'Yes' : 'No'}, interval: \`${ticketCodeRandomSchedule} minutes\`.`);
 		}
+		else if (ticket === 'allMainTickets') {
+			interaction.reply(`Killing status of all main tickets set to ${killing ? 'kill' : 'dont kill'}.`);
+		}
 		else {
 			interaction.reply(`Killing status of ${ticket} tickets set to ${killing ? 'kill' : 'dont kill'}.`);
 		}
