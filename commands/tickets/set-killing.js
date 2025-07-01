@@ -29,6 +29,7 @@ module.exports = {
 					{ name: 'Recovery Serivce', value: 'recovery' },
 					{ name: 'Require Code', value: 'requireCode' },
 					{ name: 'Randomize Code', value: 'randomizeCode' },
+					{ name: 'All Main Tickets', value: 'allMainTickets' },
 				)),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(modRoleId) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -62,6 +63,12 @@ module.exports = {
 			break;
 		case 'randomizeCode':
 			state.killing.randomizeCode = killing;
+			break;
+		case 'allTickets':
+			state.killing.gtaKill = killing;
+			state.killing.rdr2Kill = killing;
+			state.killing.cs2Kill = killing;
+			state.killing.unverifiedKill = killing;
 			break;
 		default:
 			return interaction.reply({ content: 'Invalid ticket type.', ephemeral: true });
