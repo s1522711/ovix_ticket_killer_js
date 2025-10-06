@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder } = require('discord.js');
+﻿const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const { staffRoleId, trialStaffRoleId } = require('../../config.json');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
 		if (!interaction.member.roles.cache.has(staffRoleId) && !interaction.member.roles.cache.has(trialStaffRoleId) && !interaction.member.permissions.has('0x0000000000000008')) {
 			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
 		}
-		await interaction.reply({ content: 'This ticket will be closed in 5 seconds.', ephemeral: true });
+		await interaction.reply({ content: 'This ticket will be closed in 5 seconds.', flags: MessageFlags.Ephemeral });
 		// send a normal message to the channel
 		const channel = interaction.channel;
 		channel.send('Hello! this ticket will be closed in 5 seconds');

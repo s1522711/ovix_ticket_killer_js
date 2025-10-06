@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+﻿const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const state = require('../../state');
 const { updateStatusMessage, updateCodeMessage } = require('../../statusAndLastState');
 
@@ -22,7 +22,7 @@ module.exports = {
 				.setMaxLength(4)),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			return interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 		}
 
 		await interaction.deferReply();
@@ -31,14 +31,14 @@ module.exports = {
 		const validate = interaction.options.getString('validate');
 
 		if (validate !== code) {
-			return interaction.editReply({ content: 'The code and the validation code do not match.', ephemeral: true });
+			return interaction.editReply({ content: 'The code and the validation code do not match.', flags: MessageFlags.Ephemeral });
 		}
 		else if (code === state.killing.ticketCode) {
 			return interaction.editReply({ content: 'The code is already set to that.', ephemeral: true });
 		}
 		// if the code is not numeric
 		else if (isNaN(code)) {
-			return interaction.editReply({ content: 'The code must be a 4 digit number.', ephemeral: true });
+			return interaction.editReply({ content: 'The code must be a 4 digit number.', flags: MessageFlags.Ephemeral });
 		}
 
 		state.killing.lastCode = state.killing.ticketCode;

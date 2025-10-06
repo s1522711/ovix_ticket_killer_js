@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
+﻿const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType, MessageFlags } = require('discord.js');
 
 const colorChoices = ['Default', 'White', 'Aqua', 'Green', 'Blue', 'Yellow', 'Purple', 'LuminousVividPink', 'Fuchsia', 'Gold', 'Orange', 'Red', 'Grey', 'Navy', 'DarkAqua', 'DarkGreen', 'DarkBlue', 'DarkPurple', 'DarkVividPink', 'DarkGold', 'DarkOrange', 'DarkRed', 'DarkGrey', 'DarkerGrey', 'LightGrey', 'DarkNavy', 'Blurple', 'Greyple', 'DarkButNotBlack', 'NotQuiteBlack', 'Random'];
 
@@ -80,7 +80,7 @@ module.exports = {
 		const footerIcon = interaction.options.getString('footerIcon');
 
 		if (color && !colorChoices.includes(color)) {
-			return interaction.reply({ content: 'Invalid color choice.', ephemeral: true });
+			return interaction.reply({ content: 'Invalid color choice.', flags: MessageFlags.Ephemeral });
 		}
 
 		const embed = new EmbedBuilder().setTitle(title);
@@ -144,6 +144,6 @@ module.exports = {
 		}
 
 		await channel.send({ embeds: [embed] });
-		interaction.reply({ content: 'Embed sent!', ephemeral: true });
+		interaction.reply({ content: 'Embed sent!', flags: MessageFlags.Ephemeral });
 	},
 };
