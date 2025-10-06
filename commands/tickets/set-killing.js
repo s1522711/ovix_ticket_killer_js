@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+﻿const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const { modRoleId, ticketCodeRandomSchedule } = require('../../config.json');
 const state = require('../../state');
 const { updateStatusMessage } = require('../../statusAndLastState');
@@ -71,7 +71,7 @@ module.exports = {
 			state.killing.unverifiedKill = killing;
 			break;
 		default:
-			return interaction.reply({ content: 'Invalid ticket type.', ephemeral: true });
+			return interaction.reply({ content: 'Invalid ticket type.', flags: MessageFlags.Ephemeral });
 		}
 
 		updateStatusMessage(interaction.client);

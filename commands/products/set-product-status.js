@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+﻿const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const { modRoleId } = require('../../config.json');
 const state = require('../../state');
 const { updateStatusMessage } = require('../../statusAndLastState');
@@ -30,7 +30,7 @@ module.exports = {
 				)),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(modRoleId) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			return interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 		}
 
 		const status = interaction.options.getString('status');
@@ -59,7 +59,7 @@ module.exports = {
 			}
 			break;
 		default:
-			return interaction.reply({ content: 'Invalid product type.', ephemeral: true });
+			return interaction.reply({ content: 'Invalid product type.', flags: MessageFlags.Ephemeral });
 		}
 
 		await updateStatusMessage(interaction.client);

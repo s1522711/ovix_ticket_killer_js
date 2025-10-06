@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+﻿const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,7 +13,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			return interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 		}
 		const commandName = interaction.options.getString('command', true).toLowerCase();
 		const command = interaction.client.commands.get(commandName);

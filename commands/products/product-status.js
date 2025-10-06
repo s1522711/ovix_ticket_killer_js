@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder } = require('discord.js');
+﻿const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const state = require('../../state');
 const { staffRoleId, upEmoji, downEmoji, updatingEmoji } = require('../../config.json');
 
@@ -9,7 +9,7 @@ module.exports = {
 		.setDescription('See the current killing status of tickets.'),
 	async execute(interaction) {
 		if (!interaction.member.roles.cache.has(staffRoleId) && !interaction.member.permissions.has('0x0000000000000008')) {
-			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			return interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 		}
 
 		const gtaEmoji = state.status.gtaStatus === 1 ? upEmoji : state.status.gtaStatus === 0 ? downEmoji : updatingEmoji;

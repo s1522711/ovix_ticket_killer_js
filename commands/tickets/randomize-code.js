@@ -1,4 +1,4 @@
-﻿const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+﻿const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const { randomizeCode } = require('../../statusAndLastState');
 const state = require('../../state');
 
@@ -9,7 +9,8 @@ module.exports = {
 		.setDescription('randomize the ticket code'),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			// return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+			return interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 		}
 		await interaction.deferReply();
 		await randomizeCode(interaction.client);
