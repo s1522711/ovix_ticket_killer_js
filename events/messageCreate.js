@@ -166,6 +166,7 @@ async function handleTicket(message) {
 	// if the message contains the correct content for stuff
 	else if (message.content.toLowerCase().includes('//rcvry//')) {
 		logToConsole('valid Recovery ticket');
+		renameTicket(message);
 		const username = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		const game = message.embeds[1].description.split('\n')[3].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
@@ -175,6 +176,7 @@ async function handleTicket(message) {
 	}
 	else if (message.content.toLowerCase().includes('//pswrd//') && message.content.toLowerCase().includes('//ye')) {
 		logToConsole('valid Unverified ticket');
+		renameTicket(message);
 		const reason = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Unverified, Reason: ${reason}`;
@@ -183,6 +185,7 @@ async function handleTicket(message) {
 	}
 	else if (message.content.toLowerCase().includes('//gvwy//') && message.content.toLowerCase().includes('//ye')) {
 		logToConsole('valid Giveaway ticket');
+		renameTicket(message);
 		const understood = message.embeds[1].description.split('\n')[1].replaceAll('`', '');
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nType: Giveaway Claim, Understood: ${understood}`;
@@ -210,12 +213,26 @@ async function handleTicket(message) {
 		const code = message.content.split('//')[2];
 		logToConsole(`ticket opened for ${game}, reason: ${reason}, read status: ${readStatus}, code: ${code}`);
 		if (message.content.includes(state.killing.lastCode)) logToConsole('Last code used'); else logToConsole('New code used');
+		renameTicket(message);
 		let messageContent = `||<@&${staffRoleId}> <@&${trialStaffRoleId}>||`;
 		messageContent += `\nGame: ${game}, Reason: ${reason}, Read? ${readStatus}`;
 		messageContent += '\nPlease do not ping staff, we will get to you as soon as possible.';
 		message.channel.send(messageContent);
 		await randomizeCode(message.client);
 	}
+}
+
+// This function will rename the ticket channel name from ticket-XXXX to ticket-usernameXXXX
+async function renameTicket(message) {
+	// get channel name and split it
+	const channelName = message.channel.name;
+	const ticketNumber = channelName.split('-')[1];
+	// get user
+	const ticketMaker = message.mentions.members.first().user;
+	// make the new name
+	const newName = 'ticket-' + ticketMaker.username + ticketNumber;
+	// rename the channel
+	await message.channel.setName(newName, 'ticket autorename');
 }
 
 async function closeTicket(message, type) {
