@@ -230,7 +230,7 @@ async function renameTicket(message) {
 	// get user
 	const ticketMaker = message.mentions.members.first().user;
 	// make the new name
-	const newName = 'ticket-' + ticketMaker.username + ticketNumber;
+	const newName = 'ticket-' + ticketMaker.username + '-' + ticketNumber;
 	// rename the channel
 	await message.channel.setName(newName, 'ticket autorename');
 }
