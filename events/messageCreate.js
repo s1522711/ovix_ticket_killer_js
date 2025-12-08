@@ -100,7 +100,7 @@ async function handleMention(message, isGhostPing) {
 			// timeout the user for a certain amount of time
 			message.member.timeout(pingTimeoutTime * 1000 * timeout.amount, `bot auto-timeout for pinging staff - ${timeout.amount} times this week`);
 
-			for (let i = 0; i < 5; i++) {
+			for (let i = 0; i < 1; i++) {
 				message.channel.send(`Please dont${isGhostPing ? ' ghost' : ' '}ping staff! <@${message.author.id}>`);
 				await new Promise(resolve => setTimeout(resolve, 1000));
 			}
