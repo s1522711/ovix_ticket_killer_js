@@ -51,5 +51,32 @@ for (const file of eventFiles) {
 
 // module.exports = client;
 
+// Listen for uncaught exceptions
+process.on('uncaughtException', (err) => {
+    try {
+        // Find the highest crash log number
+        const logFiles = fs.readdirSync(__dirname).filter(f => f.match(/^crash\d+\.log$/));
+        let highestNum = 0;
+        logFiles.forEach(f => {
+            const num = parseInt(f.match(/\d+/)[0]);
+            if (num > highestNum) highestNum = num;
+        });
+        
+        const nextNum = highestNum + 1;
+        const logFilePath = path.join(__dirname, `crash${nextNum}.log`);
+        const errorDetails = `[${new Date().toISOString()}] Uncaught Exception: ${err.message}\n${err.stack}\n`;
+        
+        // Use synchronous write to ensure the log is saved before exit
+        fs.writeFileSync(logFilePath, errorDetails);
+        console.error('Error logged to file. Process exiting.');
+    } catch (logErr) {
+        console.error('Failed to write error to log file:', logErr);
+    }
+    
+    // It is best practice to exit the process after an uncaught exception
+    // to prevent running in an unstable state.
+    process.exit(1); 
+});
+
 
 client.login(token);
